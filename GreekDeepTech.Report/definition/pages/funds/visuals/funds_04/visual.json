@@ -2,88 +2,96 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "funds_04",
   "position": {
-    "x": 255,
-    "y": 124,
+    "x": 32,
+    "y": 96,
     "z": 4000,
-    "height": 80,
-    "width": 245,
+    "height": 48,
+    "width": 1216,
     "tabOrder": 4000
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "slicer",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Key Measures"
+                      "Entity": "Fund"
                     }
                   },
-                  "Property": "Greek Fund Backed Companies"
+                  "Property": "Fund Short"
                 }
               },
-              "queryRef": "Key Measures.Greek Fund Backed Companies",
-              "nativeQueryRef": "Greek Fund Backed Companies",
-              "displayName": "Portfolio companies"
+              "queryRef": "Fund.Fund Short",
+              "nativeQueryRef": "Fund Short"
             }
           ]
         }
       }
     },
     "objects": {
-      "labels": [
+      "data": [
         {
           "properties": {
-            "fontSize": {
+            "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "20.0D"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#0B3C5D'"
-                    }
-                  }
+                  "Value": "'Basic'"
                 }
               }
             }
           }
         }
       ],
-      "categoryLabels": [
+      "header": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10.0D"
-                }
-              }
-            },
-            "color": {
+            "fontColor": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#5B6B7A'"
+                      "Value": "'#475569'"
                     }
                   }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            },
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "orientation": {
+              "expr": {
+                "Literal": {
+                  "Value": "1.0D"
                 }
               }
             }
@@ -99,6 +107,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Slicer'"
                 }
               }
             }

@@ -2,15 +2,15 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "tooltip_01",
   "position": {
-    "x": 8,
-    "y": 6,
+    "x": 10,
+    "y": 4,
     "z": 1000,
     "height": 40,
-    "width": 304,
+    "width": 300,
     "tabOrder": 1000
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "multiRowCard",
     "query": {
       "queryState": {
         "Values": {
@@ -27,21 +27,20 @@
                 }
               },
               "queryRef": "Key Measures.Selected Company",
-              "nativeQueryRef": "Selected Company",
-              "displayName": "Selected Company"
+              "nativeQueryRef": "Selected Company"
             }
           ]
         }
       }
     },
     "objects": {
-      "labels": [
+      "dataLabels": [
         {
           "properties": {
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "13.0D"
+                  "Value": "14.0D"
                 }
               }
             },
@@ -50,9 +49,47 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#1B2A38'"
+                      "Value": "'#FFFFFF'"
                     }
                   }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "cardTitle": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14.0D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             }
@@ -68,22 +105,31 @@
                   "Value": "false"
                 }
               }
-            },
-            "fontSize": {
+            }
+          }
+        }
+      ],
+      "card": [
+        {
+          "properties": {
+            "outline": {
               "expr": {
                 "Literal": {
-                  "Value": "9.0D"
+                  "Value": "'None'"
                 }
               }
             },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#5B6B7A'"
-                    }
-                  }
+            "barShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "cardPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
                 }
               }
             }
@@ -112,6 +158,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Selected Company'"
                 }
               }
             }

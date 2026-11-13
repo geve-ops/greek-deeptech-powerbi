@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "company_11",
   "position": {
-    "x": 645,
-    "y": 546,
+    "x": 32,
+    "y": 304,
     "z": 11000,
-    "height": 160,
-    "width": 620,
+    "height": 58,
+    "width": 288,
     "tabOrder": 11000
   },
   "visual": {
@@ -17,65 +17,57 @@
           "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fund"
+                      "Entity": "Key Measures"
                     }
                   },
-                  "Property": "Fund"
+                  "Property": "Profile HQ"
                 }
               },
-              "queryRef": "Fund.Fund",
-              "nativeQueryRef": "Fund"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company Fund"
-                    }
-                  },
-                  "Property": "Role"
-                }
-              },
-              "queryRef": "Company Fund.Role",
-              "nativeQueryRef": "Role"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company Fund"
-                    }
-                  },
-                  "Property": "Status"
-                }
-              },
-              "queryRef": "Company Fund.Status",
-              "nativeQueryRef": "Status"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company Fund"
-                    }
-                  },
-                  "Property": "Evidence"
-                }
-              },
-              "queryRef": "Company Fund.Evidence",
-              "nativeQueryRef": "Evidence"
+              "queryRef": "Key Measures.Profile HQ",
+              "nativeQueryRef": "Profile HQ",
+              "displayName": "HQ / Greek link"
             }
           ]
         }
       }
     },
     "objects": {
+      "values": [
+        {
+          "properties": {
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
       "total": [
         {
           "properties": {
@@ -97,14 +89,20 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
-            },
-            "text": {
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Greek fund positions and the text behind them'"
+                  "Value": "'HQ / Greek link'"
                 }
               }
             }

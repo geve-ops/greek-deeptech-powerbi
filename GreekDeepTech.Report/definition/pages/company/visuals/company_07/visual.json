@@ -2,101 +2,157 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "company_07",
   "position": {
-    "x": 15,
-    "y": 216,
+    "x": 970,
+    "y": 114,
     "z": 7000,
-    "height": 150,
-    "width": 620,
+    "height": 42,
+    "width": 160,
     "tabOrder": 7000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "multiRowCard",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Company"
+                      "Entity": "Key Measures"
                     }
                   },
-                  "Property": "What They Do"
+                  "Property": "Trend Label"
                 }
               },
-              "queryRef": "Company.What They Do",
-              "nativeQueryRef": "What They Do"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company"
-                    }
-                  },
-                  "Property": "HQ / Greek Link"
-                }
-              },
-              "queryRef": "Company.HQ / Greek Link",
-              "nativeQueryRef": "HQ / Greek Link"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company"
-                    }
-                  },
-                  "Property": "Verification Tier"
-                }
-              },
-              "queryRef": "Company.Verification Tier",
-              "nativeQueryRef": "Verification Tier"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company"
-                    }
-                  },
-                  "Property": "Map Status"
-                }
-              },
-              "queryRef": "Company.Map Status",
-              "nativeQueryRef": "Map Status"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company"
-                    }
-                  },
-                  "Property": "Primary Source"
-                }
-              },
-              "queryRef": "Company.Primary Source",
-              "nativeQueryRef": "Primary Source"
+              "queryRef": "Key Measures.Trend Label",
+              "nativeQueryRef": "Trend Label"
             }
           ]
         }
       }
     },
     "objects": {
-      "total": [
+      "dataLabels": [
         {
           "properties": {
-            "totals": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "15.0D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Trend Color"
+                    }
+                  }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "cardTitle": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Key Measures"
+                        }
+                      },
+                      "Property": "Trend Color"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "15.0D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "card": [
+        {
+          "properties": {
+            "outline": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            },
+            "barShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "cardPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "wordWrap": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -111,14 +167,20 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
-            },
-            "text": {
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Profile and verification'"
+                  "Value": "'Trend Label'"
                 }
               }
             }

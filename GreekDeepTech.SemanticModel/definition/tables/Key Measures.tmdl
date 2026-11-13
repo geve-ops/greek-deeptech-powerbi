@@ -1,6 +1,6 @@
 /// All report measures
 table 'Key Measures'
-	lineageTag: d97afb7a-d391-5234-b82f-d468c290de85
+	lineageTag: fea4a9cd-4fe8-5929-868a-137f7f459916
 
 	/// Stated round amounts converted to EUR at the what-if FX rates; equity, venture debt and grants; exits excluded
 	measure 'Capital Raised (EUR)' =
@@ -339,10 +339,335 @@ table 'Key Measures'
 		displayFolder: Labels
 		lineageTag: 7090c117-5db5-5ed7-ae5a-51089a40ab40
 
+	/// Area sparkline of capital raised by round year, 2019-2026
+	measure 'Capital Sparkline SVG' =
+			VAR yrs = GENERATESERIES ( 2019, 2026, 1 )
+			VAR t =
+			    ADDCOLUMNS (
+			        yrs,
+			        "@v", VAR y = [Value] RETURN CALCULATE ( [Capital Raised (EUR)], 'Date'[Year] = y ) + 0
+			    )
+			VAR mx = MAXX ( t, [@v] )
+			VAR pts =
+			    CONCATENATEX (
+			        t,
+			        FORMAT ( ( [Value] - 2019 ) * 100 / 7, "0.0", "en-US" ) & ","
+			            & FORMAT ( 36 - DIVIDE ( [@v], mx ) * 32, "0.0", "en-US" ),
+			        " ", [Value], ASC
+			    )
+			VAR lastY = 36 - DIVIDE ( MAXX ( FILTER ( t, [Value] = 2026 ), [@v] ), mx ) * 32
+			RETURN
+			    IF (
+			        mx > 0,
+			        "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 108 46'>"
+			            & "<polygon points='0,38 " & pts & " 100,38' fill='%23B7DDE0' fill-opacity='0.7'/>"
+			            & "<polyline points='" & pts & "' fill='none' stroke='%230E7C86' stroke-width='2.5' stroke-linejoin='round' stroke-linecap='round'/>"
+			            & "<circle cx='100' cy='" & FORMAT ( lastY, "0.0", "en-US" ) & "' r='3.5' fill='%230E7C86'/></svg>"
+			    )
+		displayFolder: Design\SVG
+		dataCategory: ImageUrl
+		lineageTag: 98e9d3ec-4e6c-56ee-98d1-b71e7c0f6bc8
+
+	/// Area sparkline of signal events per month, last 12 months to the snapshot
+	measure 'Signals Sparkline SVG' =
+			VAR asOf = [As-Of Date]
+			VAR startM = DATE ( YEAR ( asOf ), MONTH ( asOf ) - 11, 1 )
+			VAR t =
+			    ADDCOLUMNS (
+			        GENERATESERIES ( 0, 11, 1 ),
+			        "@v",
+			            VAR s = EDATE ( startM, [Value] )
+			            VAR e = EOMONTH ( s, 0 )
+			            RETURN
+			                CALCULATE ( COUNTROWS ( Signals ), REMOVEFILTERS ( 'Date' ), Signals[Event Date] >= s, Signals[Event Date] <= e ) + 0
+			    )
+			VAR mx = MAXX ( t, [@v] )
+			VAR pts =
+			    CONCATENATEX (
+			        t,
+			        FORMAT ( [Value] * 100 / 11, "0.0", "en-US" ) & ","
+			            & FORMAT ( 36 - DIVIDE ( [@v], mx ) * 32, "0.0", "en-US" ),
+			        " ", [Value], ASC
+			    )
+			VAR lastY = 36 - DIVIDE ( MAXX ( FILTER ( t, [Value] = 11 ), [@v] ), mx ) * 32
+			RETURN
+			    IF (
+			        mx > 0,
+			        "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 108 46'>"
+			            & "<polygon points='0,38 " & pts & " 100,38' fill='%23B7DDE0' fill-opacity='0.7'/>"
+			            & "<polyline points='" & pts & "' fill='none' stroke='%230E7C86' stroke-width='2.5' stroke-linejoin='round' stroke-linecap='round'/>"
+			            & "<circle cx='100' cy='" & FORMAT ( lastY, "0.0", "en-US" ) & "' r='3.5' fill='%230E7C86'/></svg>"
+			    )
+		displayFolder: Design\SVG
+		dataCategory: ImageUrl
+		lineageTag: d97afb7a-d391-5234-b82f-d468c290de85
+
+	/// Progress ring: share of companies backed by a Greek fund
+	measure 'Backed Share Ring SVG' =
+			VAR p = [Greek Fund Backed Share %]
+			RETURN
+			    IF (
+			        NOT ISBLANK ( p ),
+			        "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'>"
+			            & "<circle cx='21' cy='21' r='15.9155' fill='none' stroke='%23E2E8F0' stroke-width='5'/>"
+			            & "<circle cx='21' cy='21' r='15.9155' fill='none' stroke='%230E7C86' stroke-width='5' stroke-linecap='round' stroke-dashoffset='25' stroke-dasharray='"
+			            & FORMAT ( p * 100, "0.0", "en-US" ) & " " & FORMAT ( 100 - p * 100, "0.0", "en-US" ) & "'/>"
+			            & "<text x='21' y='24.6' text-anchor='middle' font-family='Segoe UI' font-weight='600' font-size='10' fill='%230F1B2D'>"
+			            & SUBSTITUTE ( FORMAT ( p, "0%" ), "%", "%25" ) & "</text></svg>"
+			    )
+		displayFolder: Design\SVG
+		dataCategory: ImageUrl
+		lineageTag: 2aca7090-7487-5d53-866a-1c3ddbef2e35
+
+	/// Progress ring: share of fund positions held as lead
+	measure 'Lead Share Ring SVG' =
+			VAR p = [Lead Share %]
+			RETURN
+			    IF (
+			        NOT ISBLANK ( p ),
+			        "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'>"
+			            & "<circle cx='21' cy='21' r='15.9155' fill='none' stroke='%23E2E8F0' stroke-width='5'/>"
+			            & "<circle cx='21' cy='21' r='15.9155' fill='none' stroke='%230E7C86' stroke-width='5' stroke-linecap='round' stroke-dashoffset='25' stroke-dasharray='"
+			            & FORMAT ( p * 100, "0.0", "en-US" ) & " " & FORMAT ( 100 - p * 100, "0.0", "en-US" ) & "'/>"
+			            & "<text x='21' y='24.6' text-anchor='middle' font-family='Segoe UI' font-weight='600' font-size='10' fill='%230F1B2D'>"
+			            & SUBSTITUTE ( FORMAT ( p, "0%" ), "%", "%25" ) & "</text></svg>"
+			    )
+		displayFolder: Design\SVG
+		dataCategory: ImageUrl
+		lineageTag: 35fea577-b4b6-5982-bf0c-c2154cf86df5
+
+	/// Bullet chart: bar = share of capital, tick = share of companies (scale 0-50%); teal when capital share is the larger
+	measure 'Sector Bullet SVG' =
+			VAR cs = [Capital Share %] + 0
+			VAR ks = DIVIDE ( [Companies], CALCULATE ( [Companies], ALLSELECTED ( 'Sector' ) ) )
+			VAR scale = 0.5
+			VAR wBar = MIN ( cs / scale, 1 ) * 100
+			VAR xK = MIN ( ks / scale, 1 ) * 100
+			VAR barColor = IF ( cs > ks, "%230E7C86", "%2394A3B8" )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( ks ),
+			        "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'>"
+			            & "<rect x='0' y='6' width='100' height='8' rx='4' fill='%23E2E8F0'/>"
+			            & "<rect x='0' y='6' width='" & FORMAT ( wBar, "0.0", "en-US" ) & "' height='8' rx='4' fill='" & barColor & "'/>"
+			            & "<rect x='" & FORMAT ( MAX ( xK - 1, 0 ), "0.0", "en-US" ) & "' y='1' width='2' height='18' fill='%230F1B2D'/></svg>"
+			    )
+		displayFolder: Design\SVG
+		dataCategory: ImageUrl
+		lineageTag: 94f83944-39d5-587e-af25-e222de14c245
+
+	/// Accent for the tp sector, neutral for the rest
+	measure 'Sector Bar Color' =
+			VAR tp = MAXX ( ALLSELECTED ( 'Sector'[Sector Short] ), [Capital Raised (EUR)] )
+			RETURN IF ( [Capital Raised (EUR)] = tp, "#0E7C86", "#B8C4CF" )
+		displayFolder: Design\Colour
+		lineageTag: f37e23ad-9def-543c-9c1b-8f7b2f5af9d3
+
+	/// Accent for venture stages, ink for exits, neutral for the rest
+	measure 'Stage Color' = SWITCH ( SELECTEDVALUE ( 'Stage'[Stage Family] ), "Venture", "#0E7C86", "Exit", "#0F1B2D", "#B8C4CF" )
+		displayFolder: Design\Colour
+		lineageTag: 340ded46-1f16-5ecc-a041-24541166e120
+
+	/// Accent for the five target funds
+	measure 'Fund Bar Color' = IF ( SELECTEDVALUE ( 'Fund'[Is Target Fund] ), "#0E7C86", "#B8C4CF" )
+		displayFolder: Design\Colour
+		lineageTag: 7b181916-e11b-554e-b796-4a02077ba9fe
+
+	measure 'Momentum Change Color' =
+			VAR c = [Momentum Change]
+			RETURN IF ( c > 0, "#0E7C86", IF ( c < 0, "#C2410C", "#64748B" ) )
+		displayFolder: Design\Colour
+		lineageTag: efaa2f43-d74a-5504-91bd-239f215bfdbd
+
+	measure 'Trend Color' = SWITCH ( [Momentum Trend], "Rising", "#0E7C86", "Cooling", "#C2410C", "#94A3B8" )
+		displayFolder: Design\Colour
+		lineageTag: 0827a1df-d817-5061-8656-4c4a434d8617
+
+	/// Trend with an arrow icon
+	measure 'Trend Label' = SWITCH ( [Momentum Trend], "Rising", "▲ Rising", "Cooling", "▼ Cooling", "Steady", "► Steady", "Quiet", "• Quiet" )
+		displayFolder: Design\Colour
+		lineageTag: 465054c5-30d3-51dd-9be4-3a1ef4391fea
+
+	/// Companies whose momentum score rose against the prior window
+	measure 'Rising Companies' = COUNTROWS ( FILTER ( VALUES ( 'Company'[Company ID] ), [Momentum Change] > 0 ) ) + 0
+		formatString: #,0
+		displayFolder: Momentum
+		lineageTag: 8ee5db13-e59e-5cc1-bda8-67271c7ab4df
+
+	/// Companies in view backed by two or more Greek funds
+	measure 'Co-invested Companies' =
+			COUNTROWS (
+			    FILTER (
+			        VALUES ( 'Company Fund'[Company ID] ),
+			        CALCULATE ( DISTINCTCOUNT ( 'Company Fund'[Fund] ), REMOVEFILTERS ( 'Fund' ) ) >= 2
+			    )
+			) + 0
+		formatString: #,0
+		displayFolder: Funds
+		lineageTag: 993fa013-cdab-578c-8578-8f8714027555
+
+	measure 'KPI Companies Context' = FORMAT ( [Verified Share %], "0%" ) & " fully verified"
+		displayFolder: Design\KPI
+		lineageTag: 075f3764-8405-54c4-9cd0-7440dd083b46
+
+	measure 'KPI Capital Context' = "Median round €" & FORMAT ( [Median Round (EUR)] / 1000000, "0.0", "en-US" ) & "M"
+		displayFolder: Design\KPI
+		lineageTag: 101db8da-d729-5922-a036-662117d64a50
+
+	measure 'KPI Rounds Context' = FORMAT ( [Undisclosed Rounds] + 0, "0" ) & " more undisclosed"
+		displayFolder: Design\KPI
+		lineageTag: 06fd570b-6d0e-5cc6-9989-77ecaac67435
+
+	measure 'KPI Backed Context' = FORMAT ( [Target Fund Portfolio], "0" ) & " with a target fund"
+		displayFolder: Design\KPI
+		lineageTag: 20c388e2-fa9b-56b1-bcc9-8b022e7e5fa1
+
+	measure 'KPI Momentum Context' =
+			VAR c = [Momentum Change]
+			RETURN IF ( c >= 0, "▲ +", "▼ -" ) & FORMAT ( ABS ( c ), "#,0" ) & " vs prior " & [Momentum Window Value] & "d" 
+		displayFolder: Design\KPI
+		lineageTag: b5b68dea-ef2f-5050-8504-c4be276f1c96
+
+	measure 'KPI Grants Context' = FORMAT ( [EU Projects] + 0, "#,0" ) & " CORDIS projects"
+		displayFolder: Design\KPI
+		lineageTag: faf7931c-b5bb-5469-aefe-c79a686efc05
+
+	measure 'KPI Active Context' = "of " & FORMAT ( [Companies], "0" ) & " companies in view"
+		displayFolder: Design\KPI
+		lineageTag: 874831ee-aadd-593b-8de4-64ef9fe130b1
+
+	measure 'KPI Rising Context' = "up vs the prior " & [Momentum Window Value] & " days"
+		displayFolder: Design\KPI
+		lineageTag: 8d9c8dc4-21b6-59bc-a4f7-412a9352c289
+
+	measure 'KPI Portfolio Context' = FORMAT ( DIVIDE ( [Greek Fund Backed Companies], CALCULATE ( [Companies], REMOVEFILTERS ( 'Fund' ) ) ), "0%" ) & " of companies in view" 
+		displayFolder: Design\KPI
+		lineageTag: 3da04f5f-c1e5-5912-954e-7ba3531d6d59
+
+	measure 'KPI Lead Context' = FORMAT ( [Lead Positions] + 0, "0" ) & " of " & FORMAT ( [Fund Positions] + 0, "0" ) & " positions as lead"
+		displayFolder: Design\KPI
+		lineageTag: 2f752887-df90-5217-a18b-3c4cf09ef5c8
+
+	/// Capital raised in EUR millions, as text for KPI tiles
+	measure 'KPI Capital Value' = IF ( NOT ISBLANK ( [Capital Raised (EUR)] ), "€" & FORMAT ( [Capital Raised (EUR)] / 1000000, "#,0", "en-US" ) & "M" )
+		displayFolder: Design\KPI
+		lineageTag: 0a513c0d-aa44-5359-a0fa-95df788605a5
+
+	/// EU grant funding in EUR millions, as text for KPI tiles
+	measure 'KPI Grants Value' = IF ( NOT ISBLANK ( [EU Grant Funding (EUR)] ), "€" & FORMAT ( [EU Grant Funding (EUR)] / 1000000, "#,0", "en-US" ) & "M" )
+		displayFolder: Design\KPI
+		lineageTag: 67489491-6df0-51a2-9ed6-3c2821605ea2
+
+	measure 'KPI Change Context' = "score points vs the prior " & [Momentum Window Value] & "d"
+		displayFolder: Design\KPI
+		lineageTag: ae978580-720a-5ff0-a933-15697c56cd3e
+
+	measure 'Profile What They Do' = SELECTEDVALUE ( 'Company'[What They Do] )
+		displayFolder: Design\Profile
+		lineageTag: 9937ad45-92d0-5d7f-8cd4-f2f65f2595f7
+
+	measure 'Profile HQ' = SELECTEDVALUE ( 'Company'[HQ / Greek Link] )
+		displayFolder: Design\Profile
+		lineageTag: d6d74f69-40ee-58eb-955d-8e546b93522a
+
+	measure 'Profile Verification' = SELECTEDVALUE ( 'Company'[Verification Tier] ) & ": " & SELECTEDVALUE ( 'Company'[Verification Status] )
+		displayFolder: Design\Profile
+		lineageTag: 6bdc710a-623a-51e7-9505-d1b169ffb3a9
+
+	measure 'Profile Deal' = SELECTEDVALUE ( Rounds[Deal Type] ) & ", amount " & LOWER ( SELECTEDVALUE ( Rounds[Amount Flag] ) )
+		displayFolder: Design\Profile
+		lineageTag: b5c0f418-8d9f-50d4-ae39-8914fc299260
+
+	measure 'Profile Investors' = SELECTEDVALUE ( Rounds[Investors] )
+		displayFolder: Design\Profile
+		lineageTag: 9497d9ed-0666-5e8e-830e-0ff4848e7dfe
+
+	measure 'KPI Threshold Context' = "€" & FORMAT ( [Capital Above Threshold (EUR)] / 1000000, "#,0", "en-US" ) & "M in those rounds"
+		displayFolder: Design\KPI
+		lineageTag: c42e675b-7fa0-565f-bd6e-4d997218bfff
+
+	measure 'KPI Co-invested Context' = "backed by two or more Greek funds"
+		displayFolder: Design\KPI
+		lineageTag: 255e57bc-9e27-5d3c-bc0a-2daeb974257e
+
+	/// Header subtitle that reacts to the sector and fund slicers
+	measure 'Selection Summary' =
+			VAR s =
+			    IF (
+			        ISFILTERED ( 'Sector'[Sector] ) || ISFILTERED ( 'Sector'[Sector Short] ),
+			        CONCATENATEX ( VALUES ( 'Sector'[Sector Short] ), 'Sector'[Sector Short], ", " ),
+			        "all sectors"
+			    )
+			VAR f =
+			    IF (
+			        ISFILTERED ( 'Fund'[Fund] ) || ISFILTERED ( 'Fund'[Fund Short] ),
+			        CONCATENATEX ( VALUES ( 'Fund'[Fund Short] ), 'Fund'[Fund Short], ", " ),
+			        "all Greek funds"
+			    )
+			RETURN
+			    FORMAT ( [Companies] + 0, "0" ) & " companies  ·  " & s & "  ·  " & f & "  ·  snapshot 26 Oct 2026" 
+		displayFolder: Design\Titles
+		lineageTag: 197c2a71-dc11-5b4f-9c24-5b2fa838530f
+
+	measure 'Title Capital by Year' =
+			VAR t = ADDCOLUMNS ( VALUES ( 'Date'[Year] ), "@c", [Capital Raised (EUR)] )
+			VAR tp = TOPN ( 1, t, [@c], DESC, 'Date'[Year], DESC )
+			VAR y = MAXX ( tp, 'Date'[Year] )
+			VAR sh = DIVIDE ( MAXX ( tp, [@c] ), SUMX ( t, [@c] ) )
+			RETURN IF ( NOT ISBLANK ( sh ), y & " holds " & FORMAT ( sh, "0%" ) & " of dated last-round capital", "No dated rounds in this view" )
+		displayFolder: Design\Titles
+		lineageTag: bd4da807-364b-5305-9d37-ad794c72accc
+
+	measure 'Title Capital by Sector' =
+			VAR t = ADDCOLUMNS ( VALUES ( 'Sector'[Sector Short] ), "@c", [Capital Raised (EUR)] )
+			VAR tp = TOPN ( 1, t, [@c], DESC, 'Sector'[Sector Short], ASC )
+			VAR sh = DIVIDE ( MAXX ( tp, [@c] ), SUMX ( t, [@c] ) )
+			RETURN IF ( NOT ISBLANK ( sh ), MAXX ( tp, 'Sector'[Sector Short] ) & " takes " & FORMAT ( sh, "0%" ) & " of disclosed capital", "No disclosed capital in this view" )
+		displayFolder: Design\Titles
+		lineageTag: 322ffbac-a9b4-5f45-b076-dbfd556738cd
+
+	measure 'Title Stage' =
+			VAR t = ADDCOLUMNS ( VALUES ( 'Stage'[Stage Group] ), "@n", [Companies] )
+			VAR tp = TOPN ( 1, t, [@n], DESC, 'Stage'[Stage Group], ASC )
+			RETURN MAXX ( tp, 'Stage'[Stage Group] ) & " is the most common stage (" & MAXX ( tp, [@n] ) & ")" 
+		displayFolder: Design\Titles
+		lineageTag: 93033c18-6930-5293-9819-f92f570496dc
+
+	measure 'Title Momentum' =
+			VAR t = ADDCOLUMNS ( VALUES ( 'Company'[Company] ), "@m", [Momentum Score] )
+			VAR tp = TOPN ( 1, t, [@m], DESC, 'Company'[Company], ASC )
+			RETURN MAXX ( tp, 'Company'[Company] ) & " leads on momentum (score " & FORMAT ( MAXX ( tp, [@m] ), "0" ) & ")" 
+		displayFolder: Design\Titles
+		lineageTag: f90f95f7-0e6d-5706-b072-99cb00cabf8c
+
+	measure 'Title Fund Positions' =
+			VAR t = ADDCOLUMNS ( VALUES ( 'Fund'[Fund Short] ), "@n", [Greek Fund Backed Companies] )
+			VAR tp = TOPN ( 1, t, [@n], DESC, 'Fund'[Fund Short], ASC )
+			RETURN MAXX ( tp, 'Fund'[Fund Short] ) & " holds the most positions (" & MAXX ( tp, [@n] ) & ")" 
+		displayFolder: Design\Titles
+		lineageTag: 26c21138-d10f-502c-80d5-1fc2ebf000f2
+
+	measure 'Title Overlap' =
+			VAR t =
+			    ADDCOLUMNS (
+			        CROSSJOIN ( VALUES ( 'Fund'[Fund Short] ), VALUES ( 'Co-Fund'[Co-Fund Short] ) ),
+			        "@s", [Co-Investments]
+			    )
+			VAR tp = TOPN ( 1, t, [@s], DESC, 'Fund'[Fund Short], ASC, 'Co-Fund'[Co-Fund Short], ASC )
+			VAR n = MAXX ( tp, [@s] )
+			RETURN
+			    IF (
+			        n > 0,
+			        MAXX ( tp, 'Fund'[Fund Short] ) & " and " & MAXX ( tp, 'Co-Fund'[Co-Fund Short] ) & " share the most companies (" & n & ")",
+			        "No two Greek funds share a company in this view"
+			    )
+		displayFolder: Design\Titles
+		lineageTag: 703fbc45-0e41-543a-9891-fc009b9f0960
+
 	column 'Measure Placeholder'
 		dataType: string
 		isHidden
-		lineageTag: 98e9d3ec-4e6c-56ee-98d1-b71e7c0f6bc8
+		lineageTag: 6be5aa8c-173d-5153-a692-45023d44d94c
 		summarizeBy: none
 		sourceColumn: Measure Placeholder
 

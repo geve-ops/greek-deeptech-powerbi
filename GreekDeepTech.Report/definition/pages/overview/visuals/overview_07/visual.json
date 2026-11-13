@@ -2,15 +2,15 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "overview_07",
   "position": {
-    "x": 1065,
-    "y": 76,
+    "x": 242,
+    "y": 158,
     "z": 7000,
-    "height": 92,
-    "width": 200,
+    "height": 32,
+    "width": 178,
     "tabOrder": 7000
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "multiRowCard",
     "query": {
       "queryState": {
         "Values": {
@@ -23,25 +23,24 @@
                       "Entity": "Key Measures"
                     }
                   },
-                  "Property": "EU Grant Funding (EUR)"
+                  "Property": "KPI Capital Context"
                 }
               },
-              "queryRef": "Key Measures.EU Grant Funding (EUR)",
-              "nativeQueryRef": "EU Grant Funding (EUR)",
-              "displayName": "EU grant funding (EUR)"
+              "queryRef": "Key Measures.KPI Capital Context",
+              "nativeQueryRef": "KPI Capital Context"
             }
           ]
         }
       }
     },
     "objects": {
-      "labels": [
+      "dataLabels": [
         {
           "properties": {
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20.0D"
+                  "Value": "9.0D"
                 }
               }
             },
@@ -50,9 +49,47 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#0B3C5D'"
+                      "Value": "'#475569'"
                     }
                   }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "cardTitle": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#475569'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9.0D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
                 }
               }
             }
@@ -65,25 +102,47 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
-            },
-            "fontSize": {
+            }
+          }
+        }
+      ],
+      "card": [
+        {
+          "properties": {
+            "outline": {
               "expr": {
                 "Literal": {
-                  "Value": "10.0D"
+                  "Value": "'None'"
                 }
               }
             },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#5B6B7A'"
-                    }
-                  }
+            "barShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "cardPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "wordWrap": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -99,6 +158,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Capital raised: context'"
                 }
               }
             }

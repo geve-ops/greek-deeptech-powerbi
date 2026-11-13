@@ -2,15 +2,15 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "overview_06",
   "position": {
-    "x": 855,
-    "y": 76,
+    "x": 242,
+    "y": 114,
     "z": 6000,
-    "height": 92,
-    "width": 200,
+    "height": 46,
+    "width": 108,
     "tabOrder": 6000
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "multiRowCard",
     "query": {
       "queryState": {
         "Values": {
@@ -23,19 +23,18 @@
                       "Entity": "Key Measures"
                     }
                   },
-                  "Property": "Greek Fund Backed Companies"
+                  "Property": "KPI Capital Value"
                 }
               },
-              "queryRef": "Key Measures.Greek Fund Backed Companies",
-              "nativeQueryRef": "Greek Fund Backed Companies",
-              "displayName": "Backed by a Greek fund"
+              "queryRef": "Key Measures.KPI Capital Value",
+              "nativeQueryRef": "KPI Capital Value"
             }
           ]
         }
       }
     },
     "objects": {
-      "labels": [
+      "dataLabels": [
         {
           "properties": {
             "fontSize": {
@@ -50,9 +49,47 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#0B3C5D'"
+                      "Value": "'#0F1B2D'"
                     }
                   }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'DIN'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "cardTitle": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#0F1B2D'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "20.0D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'DIN'"
                 }
               }
             }
@@ -65,25 +102,47 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
-            },
-            "fontSize": {
+            }
+          }
+        }
+      ],
+      "card": [
+        {
+          "properties": {
+            "outline": {
               "expr": {
                 "Literal": {
-                  "Value": "10.0D"
+                  "Value": "'None'"
                 }
               }
             },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#5B6B7A'"
-                    }
-                  }
+            "barShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "cardPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "wordWrap": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -99,6 +158,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Capital raised'"
                 }
               }
             }

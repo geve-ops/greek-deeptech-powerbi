@@ -2,166 +2,147 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "funds_11",
   "position": {
-    "x": 15,
-    "y": 474,
+    "x": 658,
+    "y": 238,
     "z": 11000,
-    "height": 232,
-    "width": 1250,
+    "height": 32,
+    "width": 282,
     "tabOrder": 11000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "multiRowCard",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
             {
               "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company"
-                    }
-                  },
-                  "Property": "Company"
-                }
-              },
-              "queryRef": "Company.Company",
-              "nativeQueryRef": "Company"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Fund"
-                    }
-                  },
-                  "Property": "Fund Short"
-                }
-              },
-              "queryRef": "Fund.Fund Short",
-              "nativeQueryRef": "Fund Short",
-              "displayName": "Fund"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company Fund"
-                    }
-                  },
-                  "Property": "Role"
-                }
-              },
-              "queryRef": "Company Fund.Role",
-              "nativeQueryRef": "Role"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company Fund"
-                    }
-                  },
-                  "Property": "Status"
-                }
-              },
-              "queryRef": "Company Fund.Status",
-              "nativeQueryRef": "Status"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Stage"
-                    }
-                  },
-                  "Property": "Stage Group"
-                }
-              },
-              "queryRef": "Stage.Stage Group",
-              "nativeQueryRef": "Stage Group",
-              "displayName": "Stage"
-            },
-            {
-              "field": {
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "Key Measures"
                     }
                   },
-                  "Property": "Last Round Text"
+                  "Property": "KPI Capital Context"
                 }
               },
-              "queryRef": "Key Measures.Last Round Text",
-              "nativeQueryRef": "Last Round Text",
-              "displayName": "Last round"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Capital Raised (EUR)"
-                }
-              },
-              "queryRef": "Key Measures.Capital Raised (EUR)",
-              "nativeQueryRef": "Capital Raised (EUR)",
-              "displayName": "EUR"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Fund Positions"
-                }
-              },
-              "queryRef": "Key Measures.Fund Positions",
-              "nativeQueryRef": "Fund Positions",
-              "displayName": "Positions"
+              "queryRef": "Key Measures.KPI Capital Context",
+              "nativeQueryRef": "KPI Capital Context"
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Key Measures"
-                  }
-                },
-                "Property": "Capital Raised (EUR)"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": false
       }
     },
     "objects": {
-      "total": [
+      "dataLabels": [
         {
           "properties": {
-            "totals": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9.0D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#475569'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "cardTitle": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#475569'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9.0D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "card": [
+        {
+          "properties": {
+            "outline": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            },
+            "barShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "cardPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "wordWrap": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -176,41 +157,20 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Portfolio companies'"
+                  "Value": "false"
                 }
               }
             }
           }
         }
       ],
-      "visualTooltip": [
+      "general": [
         {
           "properties": {
-            "show": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "type": {
-              "expr": {
-                "Literal": {
-                  "Value": "'ReportPage'"
-                }
-              }
-            },
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'tooltip'"
+                  "Value": "'Capital raised: context'"
                 }
               }
             }

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "company_01",
   "position": {
-    "x": 0,
-    "y": 0,
+    "x": 16,
+    "y": 2,
     "z": 1000,
-    "height": 64,
-    "width": 1280,
+    "height": 44,
+    "width": 560,
     "tabOrder": 1000
   },
   "visual": {
@@ -21,20 +21,9 @@
                   {
                     "value": "Company detail",
                     "textStyle": {
-                      "fontWeight": "bold",
-                      "fontSize": "20pt",
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "17pt",
                       "color": "#FFFFFF"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Drill through from any page: right-click a company and choose Drill through > Company detail",
-                    "textStyle": {
-                      "fontSize": "11pt",
-                      "color": "#CFE3EA"
                     }
                   }
                 ]
@@ -45,44 +34,13 @@
       ]
     },
     "visualContainerObjects": {
-      "background": [
+      "general": [
         {
           "properties": {
-            "show": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#0B3C5D'"
-                    }
-                  }
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0.0D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "border": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
+                  "Value": "'Company detail'"
                 }
               }
             }

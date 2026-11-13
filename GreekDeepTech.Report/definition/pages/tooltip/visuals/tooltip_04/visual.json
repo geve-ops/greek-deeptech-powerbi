@@ -2,88 +2,41 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "tooltip_04",
   "position": {
-    "x": 8,
-    "y": 174,
+    "x": 12,
+    "y": 166,
     "z": 4000,
     "height": 60,
-    "width": 148,
+    "width": 170,
     "tabOrder": 4000
   },
   "visual": {
-    "visualType": "card",
-    "query": {
-      "queryState": {
-        "Values": {
-          "projections": [
-            {
-              "field": {
+    "visualType": "image",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "imageUrl": {
+              "expr": {
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "Key Measures"
                     }
                   },
-                  "Property": "Momentum Score"
-                }
-              },
-              "queryRef": "Key Measures.Momentum Score",
-              "nativeQueryRef": "Momentum Score",
-              "displayName": "Momentum"
-            }
-          ]
-        }
-      }
-    },
-    "objects": {
-      "labels": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "14.0D"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#0B3C5D'"
-                    }
-                  }
+                  "Property": "Signals Sparkline SVG"
                 }
               }
             }
           }
         }
       ],
-      "categoryLabels": [
+      "imageScaling": [
         {
           "properties": {
-            "show": {
+            "imageScalingType": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10.0D"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#5B6B7A'"
-                    }
-                  }
+                  "Value": "'Fit'"
                 }
               }
             }
@@ -99,6 +52,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Signals sparkline'"
                 }
               }
             }

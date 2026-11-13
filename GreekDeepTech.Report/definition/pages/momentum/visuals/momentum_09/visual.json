@@ -2,92 +2,19 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "momentum_09",
   "position": {
-    "x": 785,
-    "y": 436,
+    "x": 498,
+    "y": 158,
     "z": 9000,
-    "height": 270,
-    "width": 480,
+    "height": 32,
+    "width": 226,
     "tabOrder": 9000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "multiRowCard",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company"
-                    }
-                  },
-                  "Property": "Company"
-                }
-              },
-              "queryRef": "Company.Company",
-              "nativeQueryRef": "Company"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Backtest"
-                    }
-                  },
-                  "Property": "Round Month"
-                }
-              },
-              "queryRef": "Backtest.Round Month",
-              "nativeQueryRef": "Round Month",
-              "displayName": "Round"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Backtest"
-                    }
-                  },
-                  "Property": "Commits (Baseline)"
-                }
-              },
-              "queryRef": "Backtest.Commits (Baseline)",
-              "nativeQueryRef": "Commits (Baseline)",
-              "displayName": "Baseline"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Backtest"
-                    }
-                  },
-                  "Property": "Commits (Before Round)"
-                }
-              },
-              "queryRef": "Backtest.Commits (Before Round)",
-              "nativeQueryRef": "Commits (Before Round)",
-              "displayName": "Before round"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Backtest"
-                    }
-                  },
-                  "Property": "Change"
-                }
-              },
-              "queryRef": "Backtest.Change",
-              "nativeQueryRef": "Change"
-            },
             {
               "field": {
                 "Measure": {
@@ -96,43 +23,126 @@
                       "Entity": "Key Measures"
                     }
                   },
-                  "Property": "Backtest Companies"
+                  "Property": "KPI Change Context"
                 }
               },
-              "queryRef": "Key Measures.Backtest Companies",
-              "nativeQueryRef": "Backtest Companies",
-              "displayName": "n"
+              "queryRef": "Key Measures.KPI Change Context",
+              "nativeQueryRef": "KPI Change Context"
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Backtest"
-                  }
-                },
-                "Property": "Round Month"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": false
       }
     },
     "objects": {
-      "total": [
+      "dataLabels": [
         {
           "properties": {
-            "totals": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9.0D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#475569'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "cardTitle": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#475569'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9.0D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "card": [
+        {
+          "properties": {
+            "outline": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            },
+            "barShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "cardPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "wordWrap": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -147,14 +157,20 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
-            },
-            "text": {
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Backtest: GitHub commits before each disclosed round'"
+                  "Value": "'Change vs prior window: context'"
                 }
               }
             }

@@ -2,63 +2,19 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "overview_11",
   "position": {
-    "x": 325,
-    "y": 454,
+    "x": 658,
+    "y": 114,
     "z": 11000,
-    "height": 252,
-    "width": 620,
+    "height": 46,
+    "width": 108,
     "tabOrder": 11000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "multiRowCard",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company"
-                    }
-                  },
-                  "Property": "Company"
-                }
-              },
-              "queryRef": "Company.Company",
-              "nativeQueryRef": "Company"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Sector"
-                    }
-                  },
-                  "Property": "Sector Short"
-                }
-              },
-              "queryRef": "Sector.Sector Short",
-              "nativeQueryRef": "Sector Short",
-              "displayName": "Sector"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Rounds"
-                    }
-                  },
-                  "Property": "Amount Text"
-                }
-              },
-              "queryRef": "Rounds.Amount Text",
-              "nativeQueryRef": "Amount Text",
-              "displayName": "Amount as reported"
-            },
             {
               "field": {
                 "Measure": {
@@ -67,43 +23,126 @@
                       "Entity": "Key Measures"
                     }
                   },
-                  "Property": "Capital Raised (EUR)"
+                  "Property": "Greek Fund Backed Companies"
                 }
               },
-              "queryRef": "Key Measures.Capital Raised (EUR)",
-              "nativeQueryRef": "Capital Raised (EUR)",
-              "displayName": "EUR"
+              "queryRef": "Key Measures.Greek Fund Backed Companies",
+              "nativeQueryRef": "Greek Fund Backed Companies"
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Key Measures"
-                  }
-                },
-                "Property": "Capital Raised (EUR)"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": false
       }
     },
     "objects": {
-      "total": [
+      "dataLabels": [
         {
           "properties": {
-            "totals": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "20.0D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#0F1B2D'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'DIN'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "cardTitle": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#0F1B2D'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "20.0D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'DIN'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "card": [
+        {
+          "properties": {
+            "outline": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            },
+            "barShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "cardPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "wordWrap": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -118,41 +157,20 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Largest disclosed rounds (right-click a company to drill through)'"
+                  "Value": "false"
                 }
               }
             }
           }
         }
       ],
-      "visualTooltip": [
+      "general": [
         {
           "properties": {
-            "show": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "type": {
-              "expr": {
-                "Literal": {
-                  "Value": "'ReportPage'"
-                }
-              }
-            },
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'tooltip'"
+                  "Value": "'Backed by a Greek fund'"
                 }
               }
             }

@@ -2,76 +2,41 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "overview_13",
   "position": {
-    "x": 955,
-    "y": 520,
+    "x": 778,
+    "y": 110,
     "z": 13000,
-    "height": 60,
-    "width": 310,
+    "height": 50,
+    "width": 50,
     "tabOrder": 13000
   },
   "visual": {
-    "visualType": "slicer",
-    "query": {
-      "queryState": {
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Sector"
-                    }
-                  },
-                  "Property": "Sector"
-                }
-              },
-              "queryRef": "Sector.Sector",
-              "nativeQueryRef": "Sector"
-            }
-          ]
-        }
-      }
-    },
+    "visualType": "image",
     "objects": {
-      "data": [
+      "general": [
         {
           "properties": {
-            "mode": {
+            "imageUrl": {
               "expr": {
-                "Literal": {
-                  "Value": "'Dropdown'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Key Measures"
+                    }
+                  },
+                  "Property": "Backed Share Ring SVG"
                 }
               }
             }
           }
         }
       ],
-      "header": [
+      "imageScaling": [
         {
           "properties": {
-            "show": {
+            "imageScalingType": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Sector'"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#0B3C5D'"
-                    }
-                  }
+                  "Value": "'Fit'"
                 }
               }
             }
@@ -87,6 +52,19 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Backed by a Greek fund: progress ring'"
                 }
               }
             }

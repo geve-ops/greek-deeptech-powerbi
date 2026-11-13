@@ -2,73 +2,200 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "about_03",
   "position": {
-    "x": 845,
-    "y": 76,
+    "x": 40,
+    "y": 100,
     "z": 3000,
-    "height": 200,
-    "width": 420,
+    "height": 592,
+    "width": 768,
     "tabOrder": 3000
   },
   "visual": {
-    "visualType": "pivotTable",
-    "query": {
-      "queryState": {
-        "Rows": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company"
-                    }
-                  },
-                  "Property": "Verification Tier"
-                }
-              },
-              "queryRef": "Company.Verification Tier",
-              "nativeQueryRef": "Verification Tier"
-            }
-          ]
-        },
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Companies"
-                }
-              },
-              "queryRef": "Key Measures.Companies",
-              "nativeQueryRef": "Companies"
-            }
-          ]
-        }
-      }
-    },
-    "visualContainerObjects": {
-      "title": [
+    "visualType": "textbox",
+    "objects": {
+      "general": [
         {
           "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Sources",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "12pt",
+                      "color": "#0F1B2D"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Companies, rounds and investors: Greek Deep Tech Market Map dataset (github.com/geve-ops/greek-deeptech-market-map). Every row carries its own source links, shown on the Company page.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Signals: deal-flow tracker snapshot of 26 Oct 2026 (github.com/geve-ops/vc-dealflow-tracker): Google News, job boards, GitHub and CORDIS.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "FX: ECB euro reference rates of 12 Nov 2026 (USD 1.1081, GBP 0.83595 per EUR), ecb.europa.eu/stats/eurofxref.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Modelling rules",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "12pt",
+                      "color": "#0F1B2D"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Amounts: the first figure stated in the amount text, in its own currency. '~' is flagged Approximate, 'more than' Lower bound. Texts that say not found, undisclosed or unverified carry no amount. Nothing is estimated.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Capital raised counts equity, venture debt and grants with a stated amount; exits and acquisitions are excluded.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Dates: day and month dates are kept; year-only dates get no month and stay out of the monthly and time-intelligence views.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Greek funds: matched by name in the investors text, using the tracker's fund list. Role is read from the same text.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Limits",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "12pt",
+                      "color": "#0F1B2D"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "One round per company: the market map stores the last known round, so this is not a funding history.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "One weekly snapshot so far: momentum compares two windows inside it; open job posts and last GitHub pushes favour recent dates.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "One recent FX rate for older rounds is a simplification. EU grant amounts are whole-project EU contributions.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "The report shows Include and Borderline companies by default (report filter on Map status).",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#475569"
+                    }
+                  }
+                ]
               }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Companies by verification tier'"
-                }
-              }
-            }
+            ]
           }
         }
       ]

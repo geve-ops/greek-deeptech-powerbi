@@ -2,105 +2,41 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "company_09",
   "position": {
-    "x": 15,
-    "y": 376,
+    "x": 1150,
+    "y": 116,
     "z": 9000,
-    "height": 330,
-    "width": 620,
+    "height": 56,
+    "width": 96,
     "tabOrder": 9000
   },
   "visual": {
-    "visualType": "tableEx",
-    "query": {
-      "queryState": {
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Signals"
-                    }
-                  },
-                  "Property": "Event Date"
-                }
-              },
-              "queryRef": "Signals.Event Date",
-              "nativeQueryRef": "Event Date"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Signals"
-                    }
-                  },
-                  "Property": "Signal Type"
-                }
-              },
-              "queryRef": "Signals.Signal Type",
-              "nativeQueryRef": "Signal Type"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Signals"
-                    }
-                  },
-                  "Property": "Title"
-                }
-              },
-              "queryRef": "Signals.Title",
-              "nativeQueryRef": "Title"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Signals"
-                    }
-                  },
-                  "Property": "Source"
-                }
-              },
-              "queryRef": "Signals.Source",
-              "nativeQueryRef": "Source"
-            }
-          ]
-        }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Signals"
-                  }
-                },
-                "Property": "Event Date"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": false
-      }
-    },
+    "visualType": "image",
     "objects": {
-      "total": [
+      "general": [
         {
           "properties": {
-            "totals": {
+            "imageUrl": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Key Measures"
+                    }
+                  },
+                  "Property": "Signals Sparkline SVG"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "imageScaling": [
+        {
+          "properties": {
+            "imageScalingType": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "'Fit'"
                 }
               }
             }
@@ -115,14 +51,20 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
-            },
-            "text": {
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Signals in the tracker snapshot'"
+                  "Value": "'Signals per month, last 12 months'"
                 }
               }
             }

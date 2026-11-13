@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "company_10",
   "position": {
-    "x": 645,
-    "y": 376,
+    "x": 32,
+    "y": 216,
     "z": 10000,
-    "height": 160,
-    "width": 620,
+    "height": 88,
+    "width": 288,
     "tabOrder": 10000
   },
   "visual": {
@@ -17,83 +17,57 @@
           "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Grants"
+                      "Entity": "Key Measures"
                     }
                   },
-                  "Property": "Acronym"
+                  "Property": "Profile What They Do"
                 }
               },
-              "queryRef": "Grants.Acronym",
-              "nativeQueryRef": "Acronym"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Grants"
-                    }
-                  },
-                  "Property": "Signed Date"
-                }
-              },
-              "queryRef": "Grants.Signed Date",
-              "nativeQueryRef": "Signed Date"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Grants"
-                    }
-                  },
-                  "Property": "EU Contribution (EUR)"
-                }
-              },
-              "queryRef": "Grants.EU Contribution (EUR)",
-              "nativeQueryRef": "EU Contribution (EUR)"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Grants"
-                    }
-                  },
-                  "Property": "Status"
-                }
-              },
-              "queryRef": "Grants.Status",
-              "nativeQueryRef": "Status"
+              "queryRef": "Key Measures.Profile What They Do",
+              "nativeQueryRef": "Profile What They Do",
+              "displayName": "What they do"
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Grants"
-                  }
-                },
-                "Property": "Signed Date"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": false
       }
     },
     "objects": {
+      "values": [
+        {
+          "properties": {
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
       "total": [
         {
           "properties": {
@@ -115,14 +89,20 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
-            },
-            "text": {
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'EU-funded projects naming the company (CORDIS)'"
+                  "Value": "'What they do'"
                 }
               }
             }

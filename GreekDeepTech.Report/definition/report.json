@@ -111,6 +111,41 @@
           "name": "GreekDeepTech.json",
           "path": "GreekDeepTech.json",
           "type": "CustomTheme"
+        },
+        {
+          "name": "bg_overview.png",
+          "path": "bg_overview.png",
+          "type": "Image"
+        },
+        {
+          "name": "bg_sectors.png",
+          "path": "bg_sectors.png",
+          "type": "Image"
+        },
+        {
+          "name": "bg_funds.png",
+          "path": "bg_funds.png",
+          "type": "Image"
+        },
+        {
+          "name": "bg_momentum.png",
+          "path": "bg_momentum.png",
+          "type": "Image"
+        },
+        {
+          "name": "bg_company.png",
+          "path": "bg_company.png",
+          "type": "Image"
+        },
+        {
+          "name": "bg_tooltip.png",
+          "path": "bg_tooltip.png",
+          "type": "Image"
+        },
+        {
+          "name": "bg_about.png",
+          "path": "bg_about.png",
+          "type": "Image"
         }
       ]
     }

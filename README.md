@@ -4,7 +4,7 @@ A Power BI model and report on where venture money goes in Greek deep tech, whic
 
 The project is saved as a **Power BI Project (PBIP)**: the semantic model is plain-text TMDL and the report is PBIR JSON, so every measure, query and visual is reviewable in git.
 
-![Executive overview](docs/screenshots/01-overview.png)
+![Overview](docs/screenshots/01-overview.png)
 
 ## What it answers
 
@@ -21,18 +21,20 @@ Figures are for the 69 in-scope companies (marked Include or Borderline in the m
 
 | Page | What it shows | Techniques |
 |---|---|---|
-| Executive overview | KPIs, capital by round year and sector, stage mix, largest rounds | Report-level scope filter, drill-through, report-page tooltip |
-| Sectors & stages | Any metric by any breakdown; stage-by-sector heatmap; time intelligence; round-size threshold | Field parameters, calculation group, what-if parameter, conditional formatting |
-| Fund lens | One fund's portfolio, lead positions and co-investment overlap with every other Greek fund | Many-to-many bridge, disconnected co-fund table, dynamic title |
-| Momentum & signals | Weighted news, hiring, GitHub and EU-grant events in a sliding window, versus the window before | What-if window length, ranking, GitHub backtest |
-| Company detail | Profile, last round, investors, signals, EU projects and the text behind each fund match | Drill-through page (opens on Perceptual Robotics) |
-| Company tooltip | Last round, Greek funds and momentum when you hover a company | Report-page tooltip |
-| About the data | Sources, modelling rules, limits, and how the amounts and dates were reported | Data-quality tables |
+| Overview | Six KPI tiles, capital by round year and sector, stage mix, largest rounds | SVG sparklines and progress ring, insight-headline titles, chart/table toggle and slide-in filter panel (bookmarks), clear-all-slicers button, report-page tooltip |
+| Sectors | Any metric by any breakdown; a sector scorecard with bullet charts; time intelligence; stage-by-sector heatmap; round-size threshold | Field parameters, SVG bullet chart, calculation group, what-if parameter, gradient formatting |
+| Funds | One fund's portfolio, lead positions, syndication and co-investment overlap with every other Greek fund | Many-to-many bridge, disconnected co-fund table, tile slicer, dynamic titles |
+| Momentum | Weighted news, hiring, GitHub and EU-grant events in a sliding window, versus the window before | What-if window, data bars, colour and icon rules, GitHub backtest |
+| Company | Profile, last round, investors, signals, EU projects and the text behind each fund match | Drill-through page (opens on Perceptual Robotics) |
+| Company tooltip | Last round, Greek funds, 12-month signal sparkline and trend when you hover a company | Dark report-page tooltip |
+| About | Sources, modelling rules, limits, and how the amounts and dates were reported | Data-quality tables |
+
+Every page shares a header with a page navigator and a subtitle that reacts to the slicers. The design system (palette, grid, backgrounds, theme, every visual's position, the SVG DAX and a polish checklist) is written up in [docs/design.md](docs/design.md).
 
 | | |
 |---|---|
 | ![Sectors and stages](docs/screenshots/02-sectors.png) | ![Fund lens](docs/screenshots/03-funds.png) |
-| ![Momentum and signals](docs/screenshots/04-momentum.png) | ![Company detail](docs/screenshots/05-company.png) |
+| ![Momentum and signals](docs/screenshots/04-momentum.png) | ![Company](docs/screenshots/05-company.png) |
 | ![About the data](docs/screenshots/07-about.png) | ![Company tooltip](docs/screenshots/06-tooltip.png) |
 
 ## Data model
@@ -113,11 +115,11 @@ In Power BI Desktop: Modeling > View as > pick a role.
 | Momentum Score (Prior Window) / Change / Trend | The same score for the N days before; the difference; Rising, Cooling, Steady or Quiet | window shifted by `w` days |
 | Momentum Rank | Dense rank among the companies in view | `RANKX ( ALLSELECTED ( 'Company' ), [Momentum Score], , DESC, DENSE )` |
 | Time Intelligence (calculation group) | Applies to any measure: Current, YTD, Prior Year, YoY Change, YoY % (own format string), Rolling 12M | `CALCULATE ( SELECTEDMEASURE (), DATESYTD ( 'Date'[Date] ) )` and so on |
-| Metric / Breakdown (field parameters) | Let the reader choose the measure and the column of the Sectors & stages chart | `NAMEOF ( 'Key Measures'[Capital Raised (EUR)] )` and so on |
+| Metric / Breakdown (field parameters) | Let the reader choose the measure and the column of the Sectors chart | `NAMEOF ( 'Key Measures'[Capital Raised (EUR)] )` and so on |
 | USD per EUR Value, GBP per EUR Value | What-if FX rates; default to the ECB reference rates of 12 Nov 2026 | `SELECTEDVALUE ( 'USD per EUR'[USD per EUR], 1.1081 )` |
 | Fund Lens Title, FX Note, As-Of Label, Company Header | Dynamic titles and notes | string measures with `SELECTEDVALUE` and `FORMAT` |
 
-Measures that feed tables return BLANK, not 0, for combinations that do not exist (for example a company and a sector it is not in). This stops multi-table visuals from cross-joining. The momentum measures check `ISEMPTY ( 'Company' )` for the same reason. All 48 measures, with descriptions and display folders, are in [`Key Measures.tmdl`](GreekDeepTech.SemanticModel/definition/tables/Key%20Measures.tmdl).
+Measures that feed tables return BLANK, not 0, for combinations that do not exist (for example a company and a sector it is not in). This stops multi-table visuals from cross-joining. The momentum measures check `ISEMPTY ( 'Company' )` for the same reason. All 88 measures (48 analytical, 40 for the design: SVG visuals, colour rules, KPI context lines and dynamic titles), with descriptions and display folders, are in [`Key Measures.tmdl`](GreekDeepTech.SemanticModel/definition/tables/Key%20Measures.tmdl).
 
 ## Limits of the data
 

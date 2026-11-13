@@ -2,259 +2,41 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
   "name": "momentum_07",
   "position": {
-    "x": 15,
-    "y": 156,
+    "x": 394,
+    "y": 118,
     "z": 7000,
-    "height": 550,
-    "width": 760,
+    "height": 38,
+    "width": 66,
     "tabOrder": 7000
   },
   "visual": {
-    "visualType": "tableEx",
-    "query": {
-      "queryState": {
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Company"
-                    }
-                  },
-                  "Property": "Company"
-                }
-              },
-              "queryRef": "Company.Company",
-              "nativeQueryRef": "Company"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Sector"
-                    }
-                  },
-                  "Property": "Sector Short"
-                }
-              },
-              "queryRef": "Sector.Sector Short",
-              "nativeQueryRef": "Sector Short",
-              "displayName": "Sector"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Momentum Score"
-                }
-              },
-              "queryRef": "Key Measures.Momentum Score",
-              "nativeQueryRef": "Momentum Score",
-              "displayName": "Score"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Momentum Score (Prior Window)"
-                }
-              },
-              "queryRef": "Key Measures.Momentum Score (Prior Window)",
-              "nativeQueryRef": "Momentum Score (Prior Window)",
-              "displayName": "Prior"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Momentum Change"
-                }
-              },
-              "queryRef": "Key Measures.Momentum Change",
-              "nativeQueryRef": "Momentum Change",
-              "displayName": "Change"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Momentum Trend"
-                }
-              },
-              "queryRef": "Key Measures.Momentum Trend",
-              "nativeQueryRef": "Momentum Trend",
-              "displayName": "Trend"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "News Items"
-                }
-              },
-              "queryRef": "Key Measures.News Items",
-              "nativeQueryRef": "News Items",
-              "displayName": "News"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Job Postings"
-                }
-              },
-              "queryRef": "Key Measures.Job Postings",
-              "nativeQueryRef": "Job Postings",
-              "displayName": "Jobs"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Repos Pushed"
-                }
-              },
-              "queryRef": "Key Measures.Repos Pushed",
-              "nativeQueryRef": "Repos Pushed",
-              "displayName": "Repos"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Key Measures"
-                    }
-                  },
-                  "Property": "Tracker Week Score"
-                }
-              },
-              "queryRef": "Key Measures.Tracker Week Score",
-              "nativeQueryRef": "Tracker Week Score",
-              "displayName": "Tracker"
-            }
-          ]
-        }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Key Measures"
-                  }
-                },
-                "Property": "Momentum Score"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": false
-      }
-    },
+    "visualType": "image",
     "objects": {
-      "values": [
+      "general": [
         {
           "properties": {
-            "backColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "FillRule": {
-                      "Input": {
-                        "Measure": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "Key Measures"
-                            }
-                          },
-                          "Property": "Momentum Score"
-                        }
-                      },
-                      "FillRule": {
-                        "linearGradient2": {
-                          "min": {
-                            "color": {
-                              "Literal": {
-                                "Value": "'#FFFFFF'"
-                              }
-                            }
-                          },
-                          "max": {
-                            "color": {
-                              "Literal": {
-                                "Value": "'#F2A541'"
-                              }
-                            }
-                          },
-                          "nullColoringStrategy": {
-                            "strategy": {
-                              "Literal": {
-                                "Value": "'asZero'"
-                              }
-                            }
-                          }
-                        }
-                      }
+            "imageUrl": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Key Measures"
                     }
-                  }
+                  },
+                  "Property": "Signals Sparkline SVG"
                 }
               }
             }
-          },
-          "selector": {
-            "data": [
-              {
-                "dataViewWildcard": {
-                  "matchingOption": 1
-                }
-              }
-            ],
-            "metadata": "Key Measures.Momentum Score"
           }
         }
       ],
-      "total": [
+      "imageScaling": [
         {
           "properties": {
-            "totals": {
+            "imageScalingType": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "'Fit'"
                 }
               }
             }
@@ -269,41 +51,20 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Company momentum (right-click to drill through)'"
+                  "Value": "false"
                 }
               }
             }
           }
         }
       ],
-      "visualTooltip": [
+      "general": [
         {
           "properties": {
-            "show": {
+            "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "type": {
-              "expr": {
-                "Literal": {
-                  "Value": "'ReportPage'"
-                }
-              }
-            },
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'tooltip'"
+                  "Value": "'Momentum score: sparkline'"
                 }
               }
             }
