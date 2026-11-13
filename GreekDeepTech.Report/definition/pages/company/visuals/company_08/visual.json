@@ -1,0 +1,117 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
+  "name": "company_08",
+  "position": {
+    "x": 645,
+    "y": 216,
+    "z": 8000,
+    "height": 150,
+    "width": 620,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rounds"
+                    }
+                  },
+                  "Property": "Deal Type"
+                }
+              },
+              "queryRef": "Rounds.Deal Type",
+              "nativeQueryRef": "Deal Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rounds"
+                    }
+                  },
+                  "Property": "Amount Flag"
+                }
+              },
+              "queryRef": "Rounds.Amount Flag",
+              "nativeQueryRef": "Amount Flag"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rounds"
+                    }
+                  },
+                  "Property": "Date Precision"
+                }
+              },
+              "queryRef": "Rounds.Date Precision",
+              "nativeQueryRef": "Date Precision"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rounds"
+                    }
+                  },
+                  "Property": "Investors"
+                }
+              },
+              "queryRef": "Rounds.Investors",
+              "nativeQueryRef": "Investors"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Last round and investors'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

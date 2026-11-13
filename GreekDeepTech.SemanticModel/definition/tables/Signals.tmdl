@@ -1,0 +1,100 @@
+/// Fact: news, hiring and GitHub events from the tracker snapshot of 2026-10-26
+table Signals
+	lineageTag: 0bc6ba66-9ff8-5825-af21-aa127dcaf5f4
+
+	column 'Company ID'
+		dataType: string
+		isHidden
+		lineageTag: 88a95538-689b-5753-b125-91629b010bb9
+		summarizeBy: none
+		sourceColumn: Company ID
+
+		annotation SummarizationSetBy = Automatic
+
+	/// News / Hiring / GitHub
+	column 'Signal Type'
+		dataType: string
+		lineageTag: 0a42e5e0-ef70-590d-8ad7-78fc822d0be5
+		summarizeBy: none
+		sourceColumn: Signal Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Subtype
+		dataType: string
+		lineageTag: 304d309a-1b4f-579b-a952-59fd48c438e6
+		summarizeBy: none
+		sourceColumn: Subtype
+
+		annotation SummarizationSetBy = Automatic
+
+	/// News: published. Hiring: posting date. GitHub: last push
+	column 'Event Date'
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: ce1e579b-dd27-5e6e-bf34-349ce20fe49b
+		summarizeBy: none
+		sourceColumn: Event Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Title
+		dataType: string
+		lineageTag: cb9e898d-2144-5d0f-81df-216278c3e5de
+		summarizeBy: none
+		sourceColumn: Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column Source
+		dataType: string
+		lineageTag: 848f79e7-2c01-5c9c-a29d-5dc77ff30da7
+		summarizeBy: none
+		sourceColumn: Source
+
+		annotation SummarizationSetBy = Automatic
+
+	column Detail
+		dataType: string
+		lineageTag: 7f908199-cca5-5bea-bac1-93241065becf
+		summarizeBy: none
+		sourceColumn: Detail
+
+		annotation SummarizationSetBy = Automatic
+
+	column URL
+		dataType: string
+		lineageTag: f293deac-8b15-5893-9a72-f42e2954e966
+		summarizeBy: none
+		sourceColumn: URL
+		dataCategory: WebUrl
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Signals = m
+		mode: import
+		source =
+				let
+				    Cos = Table.ToRecords(Snapshot),
+				    items = (v, sig as text, key as text) as list =>
+				        let s = if v = null then null else Record.FieldOrDefault(v, sig, null)
+				        in if s = null then {} else Record.FieldOrDefault(s, key, {}),
+				    toDate = (x) => if x = null or x = "" then null else Date.FromText(Text.Start(x, 10), [Format = "yyyy-MM-dd", Culture = "en-US"]),
+				    News = List.Combine(List.Transform(Cos, (c) => List.Transform(items(c[Value], "news", "items"), (i) => [
+				        #"Company ID" = c[Name], #"Signal Type" = "News", Subtype = Text.Proper(Record.FieldOrDefault(i, "kind", "news")),
+				        #"Event Date" = toDate(Record.FieldOrDefault(i, "published", null)), Title = i[title],
+				        Source = Record.FieldOrDefault(i, "source", null), Detail = Record.FieldOrDefault(i, "lang", null), URL = i[url]]))),
+				    Jobs = List.Combine(List.Transform(Cos, (c) => List.Transform(items(c[Value], "jobs", "postings"), (i) => [
+				        #"Company ID" = c[Name], #"Signal Type" = "Hiring", Subtype = "Job posting",
+				        #"Event Date" = toDate(Record.FieldOrDefault(i, "published", null)), Title = i[title],
+				        Source = Record.FieldOrDefault(c[Value][jobs], "source", null), Detail = Record.FieldOrDefault(i, "location", null), URL = i[url]]))),
+				    Repos = List.Combine(List.Transform(Cos, (c) => List.Transform(items(c[Value], "github", "repos"), (i) => [
+				        #"Company ID" = c[Name], #"Signal Type" = "GitHub", Subtype = if Record.FieldOrDefault(i, "fork", false) = true then "Fork" else "Repository",
+				        #"Event Date" = toDate(Record.FieldOrDefault(i, "pushed_at", null)), Title = i[name],
+				        Source = "GitHub", Detail = Text.From(Record.FieldOrDefault(i, "stars", 0)) & " stars", URL = i[url]]))),
+				    Out = Table.FromRecords(News & Jobs & Repos, type table [#"Company ID" = text, #"Signal Type" = text, Subtype = text,
+				        #"Event Date" = date, Title = text, Source = text, Detail = text, URL = text])
+				in
+				    Out
+
+	annotation PBI_ResultType = Table

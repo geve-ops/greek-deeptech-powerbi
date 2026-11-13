@@ -1,0 +1,40 @@
+/// Stage buckets for the free-text stage labels
+table Stage
+	lineageTag: ca8b2ab1-d849-51c5-8adc-3ae43c5fad62
+
+	column 'Stage Group'
+		dataType: string
+		lineageTag: 1d3d70da-6171-5f22-a0e1-918bccea5a95
+		summarizeBy: none
+		sourceColumn: Stage Group
+		sortByColumn: 'Stage Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stage Order'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: ff90c827-2e34-5f23-bfdb-1b326da91870
+		summarizeBy: none
+		sourceColumn: Stage Order
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stage Family'
+		dataType: string
+		lineageTag: 57545028-b5fd-57ff-bf9c-45b3ee40f4ae
+		summarizeBy: none
+		sourceColumn: Stage Family
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Stage = m
+		mode: import
+		source =
+				#table(type table [#"Stage Group" = text, #"Stage Order" = Int64.Type, #"Stage Family" = text], {
+				    {"Pre-seed", 1, "Venture"}, {"Seed", 2, "Venture"}, {"Series A", 3, "Venture"}, {"Series B+ / Growth", 4, "Venture"},
+				    {"Exited", 5, "Exit"}, {"Grant / Incubated", 6, "Non-venture"}, {"Strategic / Corporate / SME", 7, "Non-venture"},
+				    {"Debt / Other", 8, "Non-venture"}, {"Unverified", 9, "Unknown"}})
+
+	annotation PBI_ResultType = Table

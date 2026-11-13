@@ -1,0 +1,79 @@
+/// Bridge: which Greek funds back which companies (many-to-many)
+table 'Company Fund'
+	lineageTag: fdf2b02b-da9e-5ff9-a4d1-92ad9935d74f
+
+	column 'Company ID'
+		dataType: string
+		isHidden
+		lineageTag: b80ca90f-54a1-5a25-bac2-8ff839b51d02
+		summarizeBy: none
+		sourceColumn: Company ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fund
+		dataType: string
+		isHidden
+		lineageTag: 91ab8dc5-4b62-59f5-a82e-d723dc72a2e6
+		summarizeBy: none
+		sourceColumn: Fund
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Lead / Participant / Earlier round / Sold stake, read from the investors text
+	column Role
+		dataType: string
+		lineageTag: a1083b33-74af-5be6-a018-89f7010a70e9
+		summarizeBy: none
+		sourceColumn: Role
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 0c728447-7581-53c4-a5e9-991406d22aab
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The part of the investors text that names the fund
+	column Evidence
+		dataType: string
+		lineageTag: 341ba429-06ac-5bc2-bb33-ed5d4e51203e
+		summarizeBy: none
+		sourceColumn: Evidence
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Company Fund' = m
+		mode: import
+		source =
+				let
+				    Src = Table.SelectColumns(RawCompanies, {"company_id", "investors", "stage"}),
+				    Funds = Table.ToRecords(FundKeywords),
+				    Pairs = List.Combine(List.Transform(Table.ToRecords(Src), (c) =>
+				        let
+				            segs = List.Select(List.Transform(Text.Split(c[investors], ";"), Text.Trim), each _ <> ""),
+				            exited = fnStageGroup(c[stage]) = "Exited"
+				        in
+				            List.RemoveNulls(List.Transform(Funds, (f) =>
+				                let
+				                    hit = List.Select(segs, (s) => List.AnyTrue(List.Transform(f[Keywords], (k) => Text.Contains(fnNormalise(s), k)))),
+				                    seg = if List.IsEmpty(hit) then null else hit{0},
+				                    low = if seg = null then "" else Text.Lower(seg),
+				                    role =
+				                        if Text.Contains(low, "earlier") or Text.Contains(low, "seed investors") then "Earlier round"
+				                        else if Text.Contains(low, "sold shares") then "Sold stake"
+				                        else if Text.Contains(low, "lead") then "Lead"
+				                        else "Participant"
+				                in
+				                    if seg = null then null else
+				                    [#"Company ID" = c[company_id], Fund = f[Fund], Role = role,
+				                     Status = if exited or role = "Sold stake" then "Exited" else "Current", Evidence = seg]))
+				        )),
+				    Out = Table.FromRecords(Pairs, type table [#"Company ID" = text, Fund = text, Role = text, Status = text, Evidence = text])
+				in
+				    Out
+
+	annotation PBI_ResultType = Table

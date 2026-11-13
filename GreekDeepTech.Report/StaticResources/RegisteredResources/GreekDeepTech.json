@@ -1,0 +1,174 @@
+{
+  "name": "Greek Deep Tech",
+  "dataColors": [
+    "#0B3C5D",
+    "#1D7874",
+    "#F2A541",
+    "#C8553D",
+    "#7A9E9F",
+    "#4F6D7A",
+    "#E0C068",
+    "#8E7DBE",
+    "#3E92CC",
+    "#B56576"
+  ],
+  "foreground": "#1B2A38",
+  "foregroundNeutralSecondary": "#5B6B7A",
+  "background": "#FFFFFF",
+  "backgroundLight": "#F3F5F7",
+  "tableAccent": "#1D7874",
+  "good": "#1D7874",
+  "neutral": "#F2A541",
+  "bad": "#C8553D",
+  "maximum": "#0B3C5D",
+  "center": "#F2A541",
+  "minimum": "#FFFFFF",
+  "textClasses": {
+    "title": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 11,
+      "color": "#1B2A38"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": 10,
+      "color": "#1B2A38"
+    },
+    "callout": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 22,
+      "color": "#0B3C5D"
+    },
+    "header": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 12,
+      "color": "#0B3C5D"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#E1E6EB"
+              }
+            },
+            "radius": 6
+          }
+        ],
+        "title": [
+          {
+            "show": true,
+            "fontColor": {
+              "solid": {
+                "color": "#1B2A38"
+              }
+            },
+            "fontSize": 11,
+            "bold": true
+          }
+        ],
+        "padding": [
+          {
+            "top": 6,
+            "bottom": 6,
+            "left": 8,
+            "right": 8
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#F3F5F7"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "outspace": [
+          {
+            "color": {
+              "solid": {
+                "color": "#F3F5F7"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "tableEx": {
+      "*": {
+        "columnHeaders": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#0B3C5D"
+              }
+            }
+          }
+        ],
+        "values": [
+          {
+            "fontSize": 9
+          }
+        ],
+        "grid": [
+          {
+            "rowPadding": 2
+          }
+        ]
+      }
+    },
+    "pivotTable": {
+      "*": {
+        "columnHeaders": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#0B3C5D"
+              }
+            }
+          }
+        ],
+        "rowHeaders": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#1B2A38"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

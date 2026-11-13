@@ -1,0 +1,36 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DataFolder", "RawCompanies", "Snapshot", "FundKeywords", "fnNormalise", "fnParseAmount", "fnParseDate", "fnStageGroup", "Company", "Sector", "Stage", "Fund", "Company Fund", "Co-Fund", "Rounds", "Signals", "Grants", "Scores", "Backtest", "Date", "Key Measures", "Time Intelligence", "Metric", "Breakdown", "USD per EUR", "GBP per EUR", "Momentum Window", "Min Round Size"]
+
+ref table Company
+ref table Sector
+ref table Stage
+ref table Fund
+ref table 'Company Fund'
+ref table 'Co-Fund'
+ref table Rounds
+ref table Signals
+ref table Grants
+ref table Scores
+ref table Backtest
+ref table Date
+ref table 'Key Measures'
+ref table 'Time Intelligence'
+ref table Metric
+ref table Breakdown
+ref table 'USD per EUR'
+ref table 'GBP per EUR'
+ref table 'Momentum Window'
+ref table 'Min Round Size'
+
+ref role 'Fund Partner - Big Pi'
+ref role 'Sector Analyst - AI'

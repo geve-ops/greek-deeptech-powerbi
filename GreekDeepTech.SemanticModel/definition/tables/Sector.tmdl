@@ -1,0 +1,52 @@
+/// Market map sectors
+table Sector
+	lineageTag: 4295ec59-1275-577e-8869-b7e6c107fe8e
+
+	column Sector
+		dataType: string
+		lineageTag: 3da6ac2a-9d9c-5345-86ac-bfa2d7c6d90d
+		summarizeBy: none
+		sourceColumn: Sector
+		sortByColumn: 'Sector Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sector Short'
+		dataType: string
+		lineageTag: 1152b320-dfa5-5907-b9ef-ce56650e77f5
+		summarizeBy: none
+		sourceColumn: Sector Short
+		sortByColumn: 'Sector Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sector Order'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 2d588500-4663-5729-b9b5-ea0ceabedd68
+		summarizeBy: none
+		sourceColumn: Sector Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sector = m
+		mode: import
+		source =
+				let
+				    Names = List.Distinct(Table.Column(RawCompanies, "category")),
+				    Short = #table(type table [Sector = text, #"Sector Short" = text, #"Sector Order" = Int64.Type], {
+				        {"AI & Machine Learning", "AI / ML", 1}, {"Health & Biotech", "Health & Bio", 2},
+				        {"Robotics & Drones", "Robotics", 3}, {"Space & Defense", "Space & Defense", 4},
+				        {"Energy & Climate Tech", "Energy & Climate", 5}, {"Semiconductors & Hardware", "Semis & HW", 6},
+				        {"Industrial & Manufacturing Tech", "Industrial", 7}, {"Quantum & Advanced Computing", "Quantum", 8}}),
+				    Base = Table.FromList(Names, Splitter.SplitByNothing(), type table [Sector = text]),
+				    Joined = Table.NestedJoin(Base, {"Sector"}, Short, {"Sector"}, "S", JoinKind.LeftOuter),
+				    Exp = Table.ExpandTableColumn(Joined, "S", {"Sector Short", "Sector Order"}),
+				    Filled = Table.AddColumn(Exp, "Short", each if [Sector Short] = null then [Sector] else [Sector Short], type text),
+				    Out = Table.RenameColumns(Table.RemoveColumns(Filled, {"Sector Short"}), {{"Short", "Sector Short"}}),
+				    Ordered = Table.TransformColumns(Out, {{"Sector Order", each if _ = null then 99 else _, Int64.Type}})
+				in
+				    Ordered
+
+	annotation PBI_ResultType = Table

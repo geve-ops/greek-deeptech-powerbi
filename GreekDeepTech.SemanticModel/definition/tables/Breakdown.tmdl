@@ -1,0 +1,51 @@
+/// Field parameter: pick the column a visual breaks down by
+table Breakdown
+	lineageTag: 034deaa9-65c3-52cb-b317-ce0e52a8c7a8
+
+	column Breakdown
+		dataType: string
+		lineageTag: 826468ad-4fd3-5448-a01e-775681ffe75f
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Breakdown Order'
+		relatedColumnDetails
+			groupByColumn: 'Breakdown Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Breakdown Fields'
+		dataType: string
+		isHidden
+		lineageTag: 71c77c30-4fdf-5738-ac20-1897f30b00d7
+		summarizeBy: none
+		sourceColumn: [Value2]
+		extendedProperty ParameterMetadata =
+			{
+			  "version": 3,
+			  "kind": 2
+			}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Breakdown Order'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 524e63ee-49c2-54a7-b1cd-69a2ed0b3aea
+		summarizeBy: none
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Breakdown = calculated
+		mode: import
+		source =
+				{
+				    ("Sector", NAMEOF ( 'Sector'[Sector Short] ), 0),
+				    ("Stage", NAMEOF ( 'Stage'[Stage Group] ), 1),
+				    ("Deal type", NAMEOF ( 'Rounds'[Deal Type] ), 2),
+				    ("Verification", NAMEOF ( 'Company'[Verification Tier] ), 3),
+				    ("Map status", NAMEOF ( 'Company'[Map Status] ), 4)
+				}
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,52 @@
+relationship 757d63ee-c22c-5618-8303-fe169e860693
+	fromColumn: Company.Sector
+	toColumn: Sector.Sector
+
+relationship c6fcc401-b4fa-5748-a079-b4d47d51460d
+	fromColumn: Company.'Stage Group'
+	toColumn: Stage.'Stage Group'
+
+relationship 7ded9160-5d3e-5be8-bce9-c11b6e406443
+	fromColumn: Rounds.'Company ID'
+	toColumn: Company.'Company ID'
+
+relationship d11b2ba9-d242-5358-9d49-3313c2d148b6
+	fromColumn: Signals.'Company ID'
+	toColumn: Company.'Company ID'
+
+relationship b07074cc-153e-59e0-8d4f-ffec5ac239c0
+	fromColumn: Grants.'Company ID'
+	toColumn: Company.'Company ID'
+
+relationship c2456f30-3f4a-58b6-ab8c-db6850388e23
+	fromColumn: Scores.'Company ID'
+	toColumn: Company.'Company ID'
+
+relationship ae3d6835-7fc8-5aa4-9f29-c1b704d616bc
+	fromColumn: Backtest.'Company ID'
+	toColumn: Company.'Company ID'
+
+relationship 5d2f5729-bc77-5628-96a2-8cccbac363ed
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'Company Fund'.'Company ID'
+	toColumn: Company.'Company ID'
+
+relationship 3890154c-913b-51dc-9dfd-bcb272899037
+	fromColumn: 'Company Fund'.Fund
+	toColumn: Fund.Fund
+
+relationship 86ab4777-293e-5e06-be0b-308e09b85495
+	fromColumn: Rounds.'Round Date'
+	toColumn: Date.Date
+
+relationship 6d160b1d-07fe-5db8-b9f3-b0075e6e9bfb
+	fromColumn: Signals.'Event Date'
+	toColumn: Date.Date
+
+relationship 1d25d86e-d575-50d3-b414-42ea999b167e
+	fromColumn: Grants.'Signed Date'
+	toColumn: Date.Date
+
+relationship 987225b5-02b9-5751-a5e5-09543bb0f8ed
+	fromColumn: Scores.'Week Date'
+	toColumn: Date.Date

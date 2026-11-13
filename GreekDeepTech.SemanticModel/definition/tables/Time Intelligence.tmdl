@@ -1,0 +1,58 @@
+/// Calculation group: Current, YTD, Prior Year, YoY Change, YoY %, Rolling 12M
+table 'Time Intelligence'
+	lineageTag: f2e1f3ec-b106-538e-8b11-0720015fa82e
+
+	calculationGroup
+		precedence: 1
+
+		calculationItem Current = SELECTEDMEASURE ()
+			ordinal: 0
+
+		calculationItem YTD = CALCULATE ( SELECTEDMEASURE (), DATESYTD ( 'Date'[Date] ) )
+			ordinal: 1
+
+		calculationItem 'Prior Year' = CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( 'Date'[Date] ) )
+			ordinal: 2
+
+		calculationItem 'YoY Change' =
+				VAR cur = SELECTEDMEASURE ()
+				VAR py = CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( 'Date'[Date] ) )
+				RETURN IF ( NOT ISBLANK ( cur ) || NOT ISBLANK ( py ), cur - py )
+			ordinal: 3
+
+		calculationItem 'YoY %' =
+				VAR cur = SELECTEDMEASURE ()
+				VAR py = CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( 'Date'[Date] ) )
+				RETURN DIVIDE ( cur - py, py )
+			ordinal: 4
+			formatStringDefinition = "0.0%"
+
+		calculationItem 'Rolling 12M' =
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    DATESINPERIOD ( 'Date'[Date], MAX ( 'Date'[Date] ), -12, MONTH )
+				)
+			ordinal: 5
+
+	column 'Time Calc'
+		dataType: string
+		lineageTag: 89ff5691-0c10-525c-8810-a3810efd774d
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 576a7703-ff2a-57be-983b-8493e23bc294
+		summarizeBy: none
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Time Intelligence' = calculationGroup
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,135 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
+  "name": "company_09",
+  "position": {
+    "x": 15,
+    "y": 376,
+    "z": 9000,
+    "height": 330,
+    "width": 620,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Signals"
+                    }
+                  },
+                  "Property": "Event Date"
+                }
+              },
+              "queryRef": "Signals.Event Date",
+              "nativeQueryRef": "Event Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Signals"
+                    }
+                  },
+                  "Property": "Signal Type"
+                }
+              },
+              "queryRef": "Signals.Signal Type",
+              "nativeQueryRef": "Signal Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Signals"
+                    }
+                  },
+                  "Property": "Title"
+                }
+              },
+              "queryRef": "Signals.Title",
+              "nativeQueryRef": "Title"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Signals"
+                    }
+                  },
+                  "Property": "Source"
+                }
+              },
+              "queryRef": "Signals.Source",
+              "nativeQueryRef": "Source"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Signals"
+                  }
+                },
+                "Property": "Event Date"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Signals in the tracker snapshot'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

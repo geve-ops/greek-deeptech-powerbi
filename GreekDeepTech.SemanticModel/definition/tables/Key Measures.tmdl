@@ -1,0 +1,356 @@
+/// All report measures
+table 'Key Measures'
+	lineageTag: d97afb7a-d391-5234-b82f-d468c290de85
+
+	/// Stated round amounts converted to EUR at the what-if FX rates; equity, venture debt and grants; exits excluded
+	measure 'Capital Raised (EUR)' =
+			VAR usd = [USD per EUR Value]
+			VAR gbp = [GBP per EUR Value]
+			RETURN
+			    SUMX ( FILTER ( Rounds, Rounds[Counts As Capital] ), Rounds[Amount (Native)] / SWITCH ( Rounds[Currency], "EUR", 1, "USD", usd, "GBP", gbp ) )
+		formatString: \€#,0
+		displayFolder: Capital
+		lineageTag: bf09b42c-5d4f-5661-b575-8f827f1d0e57
+
+	/// Rounds with a stated amount, exits excluded
+	measure 'Disclosed Rounds' = CALCULATE ( COUNTROWS ( Rounds ), Rounds[Counts As Capital] = TRUE () )
+		formatString: #,0
+		displayFolder: Capital
+		lineageTag: 4d9aa381-20cb-5c0a-a307-72c74488fee9
+
+	measure 'Average Round (EUR)' = DIVIDE ( [Capital Raised (EUR)], [Disclosed Rounds] )
+		formatString: \€#,0
+		displayFolder: Capital
+		lineageTag: b4350fd8-33a1-55cc-9d4c-3b310e28972a
+
+	measure 'Median Round (EUR)' =
+			VAR usd = [USD per EUR Value]
+			VAR gbp = [GBP per EUR Value]
+			RETURN
+			    MEDIANX ( FILTER ( Rounds, Rounds[Counts As Capital] ), Rounds[Amount (Native)] / SWITCH ( Rounds[Currency], "EUR", 1, "USD", usd, "GBP", gbp ) )
+		formatString: \€#,0
+		displayFolder: Capital
+		lineageTag: 5cdd3535-1afb-5b58-8c28-8b46793985bd
+
+	measure 'Largest Round (EUR)' =
+			VAR usd = [USD per EUR Value]
+			VAR gbp = [GBP per EUR Value]
+			RETURN
+			    MAXX ( FILTER ( Rounds, Rounds[Counts As Capital] ), Rounds[Amount (Native)] / SWITCH ( Rounds[Currency], "EUR", 1, "USD", usd, "GBP", gbp ) )
+		formatString: \€#,0
+		displayFolder: Capital
+		lineageTag: 3c8f423c-5e80-5ad6-866b-4b6d21433a00
+
+	/// Share of the capital in the current selection
+	measure 'Capital Share %' = DIVIDE ( [Capital Raised (EUR)], CALCULATE ( [Capital Raised (EUR)], ALLSELECTED () ) )
+		formatString: 0.0%
+		displayFolder: Capital
+		lineageTag: 9c898eac-82c4-5de0-8788-4989717f6300
+
+	/// Disclosed rounds at or above the Min Round Size what-if value
+	measure 'Rounds Above Threshold' =
+			VAR usd = [USD per EUR Value]
+			VAR gbp = [GBP per EUR Value]
+			VAR minimum = [Min Round Size Value] * 1000000
+			RETURN
+			    COUNTROWS ( FILTER ( Rounds, Rounds[Counts As Capital] && Rounds[Amount (Native)] / SWITCH ( Rounds[Currency], "EUR", 1, "USD", usd, "GBP", gbp ) >= minimum ) ) + 0
+		formatString: #,0
+		displayFolder: Capital
+		lineageTag: a1c5713c-bd3f-5763-b16f-85ef96a82268
+
+	measure 'Capital Above Threshold (EUR)' =
+			VAR usd = [USD per EUR Value]
+			VAR gbp = [GBP per EUR Value]
+			VAR minimum = [Min Round Size Value] * 1000000
+			RETURN
+			    SUMX ( FILTER ( Rounds, Rounds[Counts As Capital] && Rounds[Amount (Native)] / SWITCH ( Rounds[Currency], "EUR", 1, "USD", usd, "GBP", gbp ) >= minimum ), Rounds[Amount (Native)] / SWITCH ( Rounds[Currency], "EUR", 1, "USD", usd, "GBP", gbp ) )
+		formatString: \€#,0
+		displayFolder: Capital
+		lineageTag: 7935b46d-c4b3-5579-950d-97297156531d
+
+	/// Share of disclosed rounds whose amount is approximate or a lower bound
+	measure 'Approximate Amount Share %' =
+			DIVIDE (
+			    CALCULATE ( [Disclosed Rounds], Rounds[Amount Flag] <> "As reported" ),
+			    [Disclosed Rounds]
+			)
+		formatString: 0%
+		displayFolder: Data quality
+		lineageTag: 5bf740a5-896e-5888-bdd0-5c411589602c
+
+	/// Every company's last-round row, disclosed or not
+	measure 'Rounds (All)' = COUNTROWS ( Rounds )
+		formatString: #,0
+		displayFolder: Data quality
+		lineageTag: ce8f5bc0-f611-5f54-8075-38c7c4e85e1a
+
+	measure 'Undisclosed Rounds' = CALCULATE ( COUNTROWS ( Rounds ), Rounds[Amount Flag] = "Not disclosed" )
+		formatString: #,0
+		displayFolder: Data quality
+		lineageTag: f94912d5-1d60-5e07-9600-f61c2f11e5cf
+
+	measure Companies = COUNTROWS ( 'Company' )
+		formatString: #,0
+		displayFolder: Companies
+		lineageTag: 8a772f89-8854-5825-b98e-1f8d4075e7f8
+
+	measure 'Verified Companies' = CALCULATE ( [Companies], 'Company'[Verification Tier] = "Verified" )
+		formatString: #,0
+		displayFolder: Data quality
+		lineageTag: aa5bec45-05d0-5d4f-bb97-fb9422dd51a1
+
+	measure 'Verified Share %' = DIVIDE ( [Verified Companies], [Companies] )
+		formatString: 0%
+		displayFolder: Data quality
+		lineageTag: 077b3e53-61e0-50c5-bad5-647f77b9c0af
+
+	/// Companies with at least one Greek fund in the investors text
+	measure 'Greek Fund Backed Companies' = CALCULATE ( DISTINCTCOUNT ( 'Company Fund'[Company ID] ) )
+		formatString: #,0
+		displayFolder: Funds
+		lineageTag: 7c5b1a9b-610b-5378-8999-11188b38aaf8
+
+	measure 'Greek Fund Backed Share %' = DIVIDE ( [Greek Fund Backed Companies], [Companies] )
+		formatString: 0%
+		displayFolder: Funds
+		lineageTag: bf7823d7-b6c9-5470-96f2-7bfeb293d866
+
+	/// Companies backed by Big Pi, Marathon, Metavallon, Velocity or egg
+	measure 'Target Fund Portfolio' = CALCULATE ( DISTINCTCOUNT ( 'Company Fund'[Company ID] ), 'Fund'[Is Target Fund] = TRUE () )
+		formatString: #,0
+		displayFolder: Funds
+		lineageTag: d333665f-e509-524c-9fb6-f258702846c2
+
+	/// Fund-company pairs
+	measure 'Fund Positions' = COUNTROWS ( 'Company Fund' )
+		formatString: #,0
+		displayFolder: Funds
+		lineageTag: f8eda34e-6f6e-50e4-a15f-cc474c4019a9
+
+	measure 'Lead Positions' = CALCULATE ( COUNTROWS ( 'Company Fund' ), 'Company Fund'[Role] = "Lead" )
+		formatString: #,0
+		displayFolder: Funds
+		lineageTag: 9462f6ac-c6d6-55b1-97b6-acaf2d5b783f
+
+	measure 'Lead Share %' = DIVIDE ( [Lead Positions], [Fund Positions] )
+		formatString: 0%
+		displayFolder: Funds
+		lineageTag: cf6c5ee1-69e3-59c3-9de0-4d7610847fd4
+
+	/// Companies backed by both the row fund (Fund) and the column fund (Co-Fund)
+	measure 'Shared Portfolio Companies' =
+			VAR rowFund = VALUES ( 'Company Fund'[Company ID] )
+			VAR colFund =
+			    CALCULATETABLE (
+			        VALUES ( 'Company Fund'[Company ID] ),
+			        REMOVEFILTERS ( 'Fund' ),
+			        TREATAS ( VALUES ( 'Co-Fund'[Co-Fund] ), 'Fund'[Fund] )
+			    )
+			RETURN
+			    COUNTROWS ( INTERSECT ( rowFund, colFund ) )
+		formatString: #,0
+		displayFolder: Funds
+		lineageTag: 463a42cb-fa2d-53d2-8f7a-0ddbd07c7c31
+
+	/// Shared Portfolio Companies with the diagonal (a fund with itself) left blank
+	measure 'Co-Investments' =
+			IF (
+			    SELECTEDVALUE ( 'Fund'[Fund] ) <> SELECTEDVALUE ( 'Co-Fund'[Co-Fund] ),
+			    [Shared Portfolio Companies]
+			)
+		formatString: #,0
+		displayFolder: Funds
+		lineageTag: 731a82e6-caf7-5786-81b7-8921dccf185e
+
+	/// Jaccard overlap: shared companies / companies backed by either fund
+	measure 'Portfolio Overlap %' =
+			VAR rowFund = VALUES ( 'Company Fund'[Company ID] )
+			VAR colFund =
+			    CALCULATETABLE (
+			        VALUES ( 'Company Fund'[Company ID] ),
+			        REMOVEFILTERS ( 'Fund' ),
+			        TREATAS ( VALUES ( 'Co-Fund'[Co-Fund] ), 'Fund'[Fund] )
+			    )
+			RETURN
+			    DIVIDE ( COUNTROWS ( INTERSECT ( rowFund, colFund ) ), COUNTROWS ( DISTINCT ( UNION ( rowFund, colFund ) ) ) )
+		formatString: 0%
+		displayFolder: Funds
+		lineageTag: 8dbe956a-e2df-510b-bbd1-fd05f9a40fe1
+
+	measure 'Signal Events' = COUNTROWS ( Signals )
+		formatString: #,0
+		displayFolder: Signals
+		lineageTag: 0fd3dd7a-0352-5f38-b17c-a50e843e4320
+
+	measure 'News Items' = CALCULATE ( COUNTROWS ( Signals ), Signals[Signal Type] = "News" )
+		formatString: #,0
+		displayFolder: Signals
+		lineageTag: a9769b96-ccc9-5d55-b85e-c8c3efb23616
+
+	measure 'Job Postings' = CALCULATE ( COUNTROWS ( Signals ), Signals[Signal Type] = "Hiring" )
+		formatString: #,0
+		displayFolder: Signals
+		lineageTag: d65e2dc2-47ab-5fec-81e9-9924a0726fe1
+
+	measure 'Repos Pushed' = CALCULATE ( COUNTROWS ( Signals ), Signals[Signal Type] = "GitHub" )
+		formatString: #,0
+		displayFolder: Signals
+		lineageTag: cf4b5eeb-9b71-5a8d-a69d-d50e35b7fb58
+
+	measure 'EU Projects' = DISTINCTCOUNT ( Grants[Project ID] )
+		formatString: #,0
+		displayFolder: Grants
+		lineageTag: 160254ab-0b4f-5aae-a0d2-52ff892b88f0
+
+	/// EU contribution to the whole of each distinct project; a project linked to two companies counts once
+	measure 'EU Grant Funding (EUR)' = SUMX ( VALUES ( Grants[Project ID] ), CALCULATE ( MAX ( Grants[EU Contribution (EUR)] ) ) )
+		formatString: \€#,0
+		displayFolder: Grants
+		lineageTag: 3f055c66-bd61-5444-ba59-d918523a73d7
+
+	/// The deal-flow tracker's own weekly score
+	measure 'Tracker Week Score' = SUM ( Scores[Week Score] )
+		formatString: #,0
+		displayFolder: Signals
+		lineageTag: 167a03ac-8d91-5742-a902-cf594c7759a6
+
+	/// Snapshot date of the signals
+	measure 'As-Of Date' = CALCULATE ( MAX ( Scores[Week Date] ), REMOVEFILTERS () )
+		formatString: yyyy-mm-dd
+		displayFolder: Momentum
+		lineageTag: 807c0eee-570d-5d55-8105-5f9421a6c5d3
+
+	/// News = 1 point, job posting = 2, GitHub push = 1
+	measure 'Weighted Signals' =
+			SUMX (
+			    Signals,
+			    SWITCH ( Signals[Signal Type], "News", 1, "Hiring", 2, "GitHub", 1, 0 )
+			)
+		formatString: #,0
+		displayFolder: Momentum
+		lineageTag: ca2c561f-6a46-5c31-a0d5-63b58ad6cb4b
+
+	/// Weighted signals in the last N days (N = Momentum Window); an EU grant signed = 3
+	measure 'Momentum Score' =
+			VAR asOf = [As-Of Date]
+			VAR w = [Momentum Window Value]
+			VAR sig =
+			    CALCULATE ( [Weighted Signals], REMOVEFILTERS ( 'Date' ), Signals[Event Date] > asOf - w, Signals[Event Date] <= asOf )
+			VAR grants =
+			    CALCULATE ( [EU Projects], REMOVEFILTERS ( 'Date' ), Grants[Signed Date] > asOf - w, Grants[Signed Date] <= asOf )
+			RETURN
+			    IF ( NOT ISEMPTY ( 'Company' ), sig + 3 * grants )
+		formatString: #,0
+		displayFolder: Momentum
+		lineageTag: 0eabd03f-e5b1-5fac-9ebf-acedc3b58a99
+
+	/// Same score for the N days before the current window
+	measure 'Momentum Score (Prior Window)' =
+			VAR asOf = [As-Of Date]
+			VAR w = [Momentum Window Value]
+			VAR sig =
+			    CALCULATE ( [Weighted Signals], REMOVEFILTERS ( 'Date' ), Signals[Event Date] > asOf - 2 * w, Signals[Event Date] <= asOf - w )
+			VAR grants =
+			    CALCULATE ( [EU Projects], REMOVEFILTERS ( 'Date' ), Grants[Signed Date] > asOf - 2 * w, Grants[Signed Date] <= asOf - w )
+			RETURN
+			    IF ( NOT ISEMPTY ( 'Company' ), sig + 3 * grants )
+		formatString: #,0
+		displayFolder: Momentum
+		lineageTag: edaf387a-a2f1-50b7-b340-f0219bc8203a
+
+	measure 'Momentum Change' = IF ( NOT ISEMPTY ( 'Company' ), [Momentum Score] - [Momentum Score (Prior Window)] )
+		formatString: +#,0;-#,0;0
+		displayFolder: Momentum
+		lineageTag: 864438f6-5b6f-5e4f-80b4-207b3ea48066
+
+	measure 'Momentum Trend' =
+			VAR cur = [Momentum Score]
+			VAR prev = [Momentum Score (Prior Window)]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        ISEMPTY ( 'Company' ), BLANK (),
+			        cur = 0 && prev = 0, "Quiet",
+			        cur > prev, "Rising",
+			        cur < prev, "Cooling",
+			        "Steady"
+			    )
+		displayFolder: Momentum
+		lineageTag: 9cfa365e-4d9c-5e1d-8df4-144b0d4aaefc
+
+	measure 'Momentum Rank' =
+			IF (
+			    HASONEVALUE ( 'Company'[Company] ),
+			    RANKX ( ALLSELECTED ( 'Company' ), [Momentum Score], , DESC, DENSE )
+			)
+		formatString: 0
+		displayFolder: Momentum
+		lineageTag: 20b6c6a9-48cd-54ee-a47a-27f7f0789448
+
+	/// Companies with any signal in the momentum window
+	measure 'Active Companies' = COUNTROWS ( FILTER ( VALUES ( 'Company'[Company ID] ), [Momentum Score] > 0 ) ) + 0
+		formatString: #,0
+		displayFolder: Momentum
+		lineageTag: 0de4014e-ce06-5bb4-ac97-2d1de7507d78
+
+	measure 'Backtest Rose' = CALCULATE ( COUNTROWS ( Backtest ), Backtest[Change] = "rose" )
+		formatString: #,0
+		displayFolder: Momentum
+		lineageTag: 50ef1f56-9336-52da-88d3-031675de8b29
+
+	measure 'Backtest Companies' = COUNTROWS ( Backtest )
+		formatString: #,0
+		displayFolder: Momentum
+		lineageTag: 02960e67-f088-5d2a-9a94-f3baad985815
+
+	measure 'Selected Company' = SELECTEDVALUE ( 'Company'[Company], "Select a company" )
+		displayFolder: Labels
+		lineageTag: b4d4a4ee-765b-5044-be0f-2d928424424a
+
+	measure 'Last Round Text' = SELECTEDVALUE ( Rounds[Amount Text] )
+		displayFolder: Labels
+		lineageTag: bb10ca57-17c8-5a71-af27-34a365bcc109
+
+	measure 'Last Round Date Text' = SELECTEDVALUE ( Rounds[Date Text] )
+		displayFolder: Labels
+		lineageTag: 1e69be81-f3c2-5d4c-beb9-b5ba0cfff13c
+
+	measure 'Company Funds Text' =
+			VAR f = SELECTEDVALUE ( 'Company'[Greek Funds] )
+			RETURN IF ( HASONEVALUE ( 'Company'[Company ID] ), IF ( f = "", "No Greek fund named in the investors text", f ) )
+		displayFolder: Labels
+		lineageTag: b4feef8e-ff88-5573-8da6-6d833a6f5d4e
+
+	measure 'Fund Lens Title' = "Fund lens: " & IF ( HASONEVALUE ( 'Fund'[Fund] ), VALUES ( 'Fund'[Fund] ), "all Greek funds" )
+		displayFolder: Labels
+		lineageTag: 052fadfc-32da-5010-9611-fe247a006603
+
+	measure 'FX Note' =
+			"Amounts in EUR at " & FORMAT ( [USD per EUR Value], "0.0000" ) & " USD and "
+			    & FORMAT ( [GBP per EUR Value], "0.00000" ) & " GBP per EUR (ECB reference rates of 2026-11-12 unless changed)" 
+		displayFolder: Labels
+		lineageTag: b92f0d08-50ad-5c61-aa97-b685fdd25b03
+
+	measure 'As-Of Label' = "Signals as of " & FORMAT ( [As-Of Date], "d mmm yyyy" ) & ", window " & [Momentum Window Value] & " days"
+		displayFolder: Labels
+		lineageTag: 822e525a-e93d-5e1a-a7ac-4b55579cbc7c
+
+	measure 'Company Header' = SELECTEDVALUE ( 'Company'[Company] ) & "  |  " & SELECTEDVALUE ( 'Company'[Sector] ) & "  |  " & SELECTEDVALUE ( 'Company'[Stage (Reported)] )
+		displayFolder: Labels
+		lineageTag: 7090c117-5db5-5ed7-ae5a-51089a40ab40
+
+	column 'Measure Placeholder'
+		dataType: string
+		isHidden
+		lineageTag: 98e9d3ec-4e6c-56ee-98d1-b71e7c0f6bc8
+		summarizeBy: none
+		sourceColumn: Measure Placeholder
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Key Measures' = m
+		mode: import
+		source =
+				#table(type table [#"Measure Placeholder" = text], {})
+
+	annotation PBI_ResultType = Table

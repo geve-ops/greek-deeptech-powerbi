@@ -1,0 +1,7 @@
+/// Demo role: a Big Pi Ventures partner sees only companies whose investors text names Big Pi
+role 'Fund Partner - Big Pi'
+	modelPermission: read
+
+	tablePermission Company = CONTAINSSTRING ( 'Company'[Greek Funds], "Big Pi Ventures" )
+
+	annotation PBI_Id = 8a04a573fb155f0caf1dcf636723a59f

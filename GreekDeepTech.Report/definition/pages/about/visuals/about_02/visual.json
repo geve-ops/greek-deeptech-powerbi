@@ -1,0 +1,183 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
+  "name": "about_02",
+  "position": {
+    "x": 15,
+    "y": 76,
+    "z": 2000,
+    "height": 630,
+    "width": 820,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Sources",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#0B3C5D"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Companies, rounds and investors: Greek Deep Tech Market Map dataset (github.com/geve-ops/greek-deeptech-market-map). Every row carries its own source links, shown on the Company detail page.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Signals: deal-flow tracker snapshot of 26 Oct 2026 (github.com/geve-ops/vc-dealflow-tracker): Google News, job boards, GitHub and CORDIS (EU-funded projects).",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "FX: ECB euro reference rates of 12 Nov 2026 (USD 1.1081, GBP 0.83595 per EUR), ecb.europa.eu/stats/eurofxref. The sliders let you test other rates.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Modelling rules",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#0B3C5D"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Amounts: the first figure stated in the amount text, in its own currency. '~' is flagged Approximate, 'more than' Lower bound. Texts that say not found, undisclosed or unverified carry no amount. Nothing is estimated.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Capital raised counts equity, venture debt and grants with a stated amount; exits and acquisitions are excluded.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Dates: day and month dates are kept; year-only dates get no month and stay out of the monthly and time-intelligence views.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Greek funds: matched by name in the investors text, using the tracker's fund list. Role (lead, participant, earlier round) is read from the same text.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Limits",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "12pt",
+                      "color": "#0B3C5D"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "One round per company: the market map stores the last known round, so this is not a funding history and the year view shows when last rounds happened, not total yearly investment.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "One weekly snapshot so far: momentum compares two windows inside that snapshot; open job posts and last GitHub pushes favour recent dates.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Converting historic rounds at one recent FX rate is a simplification. EU grant amounts are the EU contribution to the whole project, not the company's share.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "By default the report shows Include and Borderline companies (report filter on Map status).",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#1B2A38"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

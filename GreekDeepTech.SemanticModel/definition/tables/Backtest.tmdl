@@ -1,0 +1,98 @@
+/// Fact: did GitHub commits change in the months before each disclosed round?
+table Backtest
+	lineageTag: a224280e-f802-5c50-869e-1a36ec608ea9
+
+	column 'Company ID'
+		dataType: string
+		isHidden
+		lineageTag: cc55d7a5-f403-52f6-8129-89dc6af13415
+		summarizeBy: none
+		sourceColumn: Company ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GitHub Org'
+		dataType: string
+		lineageTag: 2326ea55-0951-5351-9a0f-66cdd59b10f6
+		summarizeBy: none
+		sourceColumn: GitHub Org
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Round Month'
+		dataType: dateTime
+		formatString: yyyy-mm
+		lineageTag: d6198350-b184-5f0c-88c2-a803c981d2b1
+		summarizeBy: none
+		sourceColumn: Round Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Round
+		dataType: string
+		lineageTag: be5e2843-5964-5f17-baab-7c314f689533
+		summarizeBy: none
+		sourceColumn: Round
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Repos Counted'
+		dataType: int64
+		formatString: 0
+		lineageTag: 30aa5ab1-6b45-5074-8eae-99aead5c43c4
+		summarizeBy: none
+		sourceColumn: Repos Counted
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Commits (Baseline)'
+		dataType: int64
+		formatString: 0
+		lineageTag: e2480478-64f3-50a4-bea6-ebd6a802cbf6
+		summarizeBy: none
+		sourceColumn: Commits (Baseline)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Commits (Before Round)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6b231625-016c-5915-b25b-c138144bb69f
+		summarizeBy: none
+		sourceColumn: Commits (Before Round)
+
+		annotation SummarizationSetBy = Automatic
+
+	column Change
+		dataType: string
+		lineageTag: 26ca77b6-647c-529c-890e-c2ba6dc34d27
+		summarizeBy: none
+		sourceColumn: Change
+
+		annotation SummarizationSetBy = Automatic
+
+	column Capped
+		dataType: boolean
+		lineageTag: aec74052-8973-5b59-8f1d-34818676663a
+		summarizeBy: none
+		sourceColumn: Capped
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Backtest = m
+		mode: import
+		source =
+				let
+				    Src = Table.PromoteHeaders(Csv.Document(File.Contents(DataFolder & "backtest.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv])),
+				    Fix = if Table.ColumnNames(Src){0} = "company_id" then Src else Table.RenameColumns(Src, {{Table.ColumnNames(Src){0}, "company_id"}}),
+				    Sel = Table.SelectColumns(Fix, {"company_id", "github_org", "round_month", "round", "repos_counted", "commits_baseline", "commits_before", "change", "capped"}),
+				    Ren = Table.RenameColumns(Sel, {{"company_id", "Company ID"}, {"github_org", "GitHub Org"}, {"round_month", "Round Month"}, {"round", "Round"},
+				        {"repos_counted", "Repos Counted"}, {"commits_baseline", "Commits (Baseline)"}, {"commits_before", "Commits (Before Round)"},
+				        {"change", "Change"}, {"capped", "Capped"}}),
+				    Month = Table.TransformColumns(Ren, {{"Round Month", each #date(Number.FromText(Text.Start(_, 4)), Number.FromText(Text.Middle(_, 5, 2)), 1), type date},
+				        {"Capped", each _ = "True", type logical}}),
+				    Typed = Table.TransformColumnTypes(Month, {{"Repos Counted", Int64.Type}, {"Commits (Baseline)", Int64.Type}, {"Commits (Before Round)", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

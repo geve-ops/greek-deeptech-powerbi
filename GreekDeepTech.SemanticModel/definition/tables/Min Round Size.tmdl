@@ -1,0 +1,28 @@
+/// What-if parameter: smallest round, in EUR millions, counted by the threshold measures
+table 'Min Round Size'
+	lineageTag: 28d06fba-7d96-5c58-830b-998678397df0
+
+	column 'Min Round Size (EUR M)'
+		dataType: double
+		formatString: 0.0
+		lineageTag: 26e683ef-0f15-5c6e-8838-fa6e0fdc052b
+		summarizeBy: none
+		sourceColumn: [Value]
+		extendedProperty ParameterMetadata =
+			{
+			  "version": 0
+			}
+
+		annotation SummarizationSetBy = Automatic
+
+	/// smallest round, in EUR millions, counted by the threshold measures
+	measure 'Min Round Size Value' = SELECTEDVALUE ( 'Min Round Size'[Min Round Size (EUR M)], 0 )
+		formatString: 0.0
+		lineageTag: 82778a5d-13b1-5f60-a90b-586e5a8b76ed
+
+	partition 'Min Round Size' = calculated
+		mode: import
+		source =
+				SELECTCOLUMNS ( GENERATESERIES ( 0, 100, 1 ), "Value", [Value] / 2 )
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,46 @@
+/// Greek venture funds tracked in the deal-flow tracker
+table Fund
+	lineageTag: 04fe08eb-7cc3-56c9-8dcb-0e021c35cbd8
+
+	column Fund
+		dataType: string
+		lineageTag: 08b0f4af-ed83-55e0-a5aa-0b3ec2e1364b
+		summarizeBy: none
+		sourceColumn: Fund
+		sortByColumn: 'Fund Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fund Short'
+		dataType: string
+		lineageTag: a0df0ca0-5f3b-5447-9500-0ac88184c225
+		summarizeBy: none
+		sourceColumn: Fund Short
+		sortByColumn: 'Fund Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Target Fund'
+		dataType: boolean
+		lineageTag: ef2fda63-330f-5403-b1f5-60f938703918
+		summarizeBy: none
+		sourceColumn: Is Target Fund
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fund Order'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 25a54a82-3490-501e-a41f-7e2ffcb70b41
+		summarizeBy: none
+		sourceColumn: Fund Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fund = m
+		mode: import
+		source =
+				Table.RemoveColumns(FundKeywords, {"Keywords"})
+
+	annotation PBI_ResultType = Table

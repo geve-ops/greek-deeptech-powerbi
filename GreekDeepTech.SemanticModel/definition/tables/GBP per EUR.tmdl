@@ -1,0 +1,28 @@
+/// What-if parameter: GBP per EUR used to convert GBP rounds; default is the ECB reference rate of 2026-11-12
+table 'GBP per EUR'
+	lineageTag: 3d511873-401d-5c82-913b-1256ad18af60
+
+	column 'GBP per EUR'
+		dataType: double
+		formatString: 0.00000
+		lineageTag: 2fb09e26-ab23-5267-b861-3e21d2370495
+		summarizeBy: none
+		sourceColumn: [Value]
+		extendedProperty ParameterMetadata =
+			{
+			  "version": 0
+			}
+
+		annotation SummarizationSetBy = Automatic
+
+	/// GBP per EUR used to convert GBP rounds; default is the ECB reference rate of 2026-11-12
+	measure 'GBP per EUR Value' = SELECTEDVALUE ( 'GBP per EUR'[GBP per EUR], 0.83595 )
+		formatString: 0.00000
+		lineageTag: 71ce838f-0951-5125-85d7-dc02f8d85508
+
+	partition 'GBP per EUR' = calculated
+		mode: import
+		source =
+				SELECTCOLUMNS ( GENERATESERIES ( 14000, 20000, 1 ), "Value", [Value] / 20000 )
+
+	annotation PBI_ResultType = Table

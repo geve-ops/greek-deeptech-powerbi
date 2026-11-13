@@ -1,0 +1,91 @@
+/// Fact: the tracker's weekly score per company (one week so far)
+table Scores
+	lineageTag: 11bd39de-b619-5c6b-b0d2-1bd1dafd253b
+
+	column 'Week Date'
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: bd4f9909-cb9a-5932-bdf4-150925d58034
+		summarizeBy: none
+		sourceColumn: Week Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Company ID'
+		dataType: string
+		isHidden
+		lineageTag: 9aefb830-ac1b-5af0-9836-472b650bfc62
+		summarizeBy: none
+		sourceColumn: Company ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Score'
+		dataType: int64
+		formatString: 0
+		lineageTag: f1294782-3541-582e-8a7d-aabac494087c
+		summarizeBy: none
+		sourceColumn: Week Score
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Funding Points'
+		dataType: int64
+		formatString: 0
+		lineageTag: 701cca86-e837-5f2e-87bd-0befe2688009
+		summarizeBy: none
+		sourceColumn: Funding Points
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Grant Points'
+		dataType: int64
+		formatString: 0
+		lineageTag: 909fa568-9e8b-5b9e-a188-81ab2c3876e6
+		summarizeBy: none
+		sourceColumn: Grant Points
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Press Points'
+		dataType: int64
+		formatString: 0
+		lineageTag: e32b54ea-a3dd-5921-aeb0-51b919f2e8bc
+		summarizeBy: none
+		sourceColumn: Press Points
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Hiring Points'
+		dataType: int64
+		formatString: 0
+		lineageTag: c665bd25-3603-5671-9911-1b1a897dd9ab
+		summarizeBy: none
+		sourceColumn: Hiring Points
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GitHub Points'
+		dataType: int64
+		formatString: 0
+		lineageTag: 25a1b80b-c01b-5f44-813c-da48de5f4569
+		summarizeBy: none
+		sourceColumn: GitHub Points
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Scores = m
+		mode: import
+		source =
+				let
+				    Src = Table.PromoteHeaders(Csv.Document(File.Contents(DataFolder & "scores.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv])),
+				    Fix = if Table.ColumnNames(Src){0} = "date" then Src else Table.RenameColumns(Src, {{Table.ColumnNames(Src){0}, "date"}}),
+				    Sel = Table.SelectColumns(Fix, {"date", "company_id", "week_score", "funding", "grants", "press", "hiring", "github"}),
+				    Ren = Table.RenameColumns(Sel, {{"date", "Week Date"}, {"company_id", "Company ID"}, {"week_score", "Week Score"},
+				        {"funding", "Funding Points"}, {"grants", "Grant Points"}, {"press", "Press Points"}, {"hiring", "Hiring Points"}, {"github", "GitHub Points"}}),
+				    Typed = Table.TransformColumnTypes(Ren, {{"Week Date", type date}, {"Week Score", Int64.Type}, {"Funding Points", Int64.Type},
+				        {"Grant Points", Int64.Type}, {"Press Points", Int64.Type}, {"Hiring Points", Int64.Type}, {"GitHub Points", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

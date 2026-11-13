@@ -1,0 +1,119 @@
+/// Calendar 2014-2026, marked as the date table
+table Date
+	dataCategory: Time
+	lineageTag: 3506f94e-62e1-507f-a461-cb252f6974b2
+
+	column Date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		isKey
+		lineageTag: 36c6bc15-bf7b-5fab-8e8c-532886c5c2eb
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: da68863f-5425-5402-82e8-ec118fc178b2
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		lineageTag: 061ddac2-6b50-560b-a21c-f6b861268944
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter'
+		dataType: string
+		lineageTag: 6fb2404c-b820-5b60-8013-24c4a23c6fb7
+		summarizeBy: none
+		sourceColumn: Year Quarter
+		sortByColumn: 'Year Quarter Sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 94b30eeb-e2a1-510a-b478-66f7c3d62d1a
+		summarizeBy: none
+		sourceColumn: Year Quarter Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 43f58a01-6972-5103-9bee-3c75afdcb9bf
+		summarizeBy: none
+		sourceColumn: Month Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: f9a18324-9712-51ca-9168-396939f1c97a
+		summarizeBy: none
+		sourceColumn: Month
+		sortByColumn: 'Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month'
+		dataType: string
+		lineageTag: 21632847-5d46-54e0-917f-b285df1dcce4
+		summarizeBy: none
+		sourceColumn: Year Month
+		sortByColumn: 'Year Month Sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 2a8fbf54-1bdf-51a6-b96d-cd0b2d3d5041
+		summarizeBy: none
+		sourceColumn: Year Month Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Start'
+		dataType: dateTime
+		formatString: yyyy-mm
+		lineageTag: 18ff29c4-5b7d-576a-a3b2-306be243294a
+		summarizeBy: none
+		sourceColumn: Month Start
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date = m
+		mode: import
+		source =
+				let
+				    Start = #date(2014, 1, 1),
+				    End = #date(2026, 12, 31),
+				    Dates = List.Dates(Start, Duration.Days(End - Start) + 1, #duration(1, 0, 0, 0)),
+				    T0 = Table.FromList(Dates, Splitter.SplitByNothing(), type table [Date = date]),
+				    T1 = Table.AddColumn(T0, "Year", each Date.Year([Date]), Int64.Type),
+				    T2 = Table.AddColumn(T1, "Quarter", each "Q" & Text.From(Date.QuarterOfYear([Date])), type text),
+				    T3 = Table.AddColumn(T2, "Year Quarter", each Text.From([Year]) & " Q" & Text.From(Date.QuarterOfYear([Date])), type text),
+				    T4 = Table.AddColumn(T3, "Year Quarter Sort", each [Year] * 10 + Date.QuarterOfYear([Date]), Int64.Type),
+				    T5 = Table.AddColumn(T4, "Month Number", each Date.Month([Date]), Int64.Type),
+				    T6 = Table.AddColumn(T5, "Month", each Date.ToText([Date], [Format = "MMM", Culture = "en-US"]), type text),
+				    T7 = Table.AddColumn(T6, "Year Month", each Date.ToText([Date], [Format = "yyyy-MM", Culture = "en-US"]), type text),
+				    T8 = Table.AddColumn(T7, "Year Month Sort", each [Year] * 100 + [Month Number], Int64.Type),
+				    T9 = Table.AddColumn(T8, "Month Start", each Date.StartOfMonth([Date]), type date)
+				in
+				    T9
+
+	annotation PBI_ResultType = Table

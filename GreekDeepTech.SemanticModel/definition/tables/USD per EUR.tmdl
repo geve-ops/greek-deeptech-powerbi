@@ -1,0 +1,28 @@
+/// What-if parameter: USD per EUR used to convert USD rounds; default is the ECB reference rate of 2026-11-12
+table 'USD per EUR'
+	lineageTag: 3bf80f9d-7933-548e-b926-63d9cbfa1cdf
+
+	column 'USD per EUR'
+		dataType: double
+		formatString: 0.0000
+		lineageTag: c39cc3d0-e83c-5e18-b9f3-862feff97ef8
+		summarizeBy: none
+		sourceColumn: [Value]
+		extendedProperty ParameterMetadata =
+			{
+			  "version": 0
+			}
+
+		annotation SummarizationSetBy = Automatic
+
+	/// USD per EUR used to convert USD rounds; default is the ECB reference rate of 2026-11-12
+	measure 'USD per EUR Value' = SELECTEDVALUE ( 'USD per EUR'[USD per EUR], 1.1081 )
+		formatString: 0.0000
+		lineageTag: 8de0fdce-35e7-5911-a293-2c860d52aadf
+
+	partition 'USD per EUR' = calculated
+		mode: import
+		source =
+				SELECTCOLUMNS ( GENERATESERIES ( 10000, 13000, 1 ), "Value", [Value] / 10000 )
+
+	annotation PBI_ResultType = Table

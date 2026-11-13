@@ -1,0 +1,28 @@
+/// What-if parameter: length in days of the momentum window
+table 'Momentum Window'
+	lineageTag: d7e17d2d-106f-5687-a0c4-a5d39e895ba0
+
+	column 'Momentum Window (days)'
+		dataType: int64
+		formatString: 0
+		lineageTag: d4ed6d1c-2b52-5112-81bf-a05e730d9954
+		summarizeBy: none
+		sourceColumn: [Value]
+		extendedProperty ParameterMetadata =
+			{
+			  "version": 0
+			}
+
+		annotation SummarizationSetBy = Automatic
+
+	/// length in days of the momentum window
+	measure 'Momentum Window Value' = SELECTEDVALUE ( 'Momentum Window'[Momentum Window (days)], 90 )
+		formatString: 0
+		lineageTag: 3633e671-305d-53c7-8abf-a92f0d73723b
+
+	partition 'Momentum Window' = calculated
+		mode: import
+		source =
+				GENERATESERIES ( 30, 180, 15 )
+
+	annotation PBI_ResultType = Table

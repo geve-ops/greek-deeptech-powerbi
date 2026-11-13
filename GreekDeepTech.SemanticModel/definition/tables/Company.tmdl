@@ -1,0 +1,265 @@
+/// One row per company in the Greek Deep Tech Market Map (88 companies)
+table Company
+	lineageTag: 9d5fb5ea-1986-5b33-967c-d37bb2f3cf86
+
+	column 'Company ID'
+		dataType: string
+		lineageTag: 17682b7a-97b3-5478-8741-edfe8c33c068
+		summarizeBy: none
+		sourceColumn: Company ID
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Company name as listed in the Greek Deep Tech Market Map
+	column Company
+		dataType: string
+		lineageTag: eb0ac9ea-1d24-58e8-b509-d5adba70d852
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sector
+		dataType: string
+		isHidden
+		lineageTag: 9eaaa6c6-0692-5d63-af2e-70f8609dfee9
+		summarizeBy: none
+		sourceColumn: Sector
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sub-sector'
+		dataType: string
+		lineageTag: 896c458f-276a-518d-96fd-96f6c6c161d6
+		summarizeBy: none
+		sourceColumn: Sub-sector
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'What They Do'
+		dataType: string
+		lineageTag: 1376a69f-bcc0-5406-8799-060f5fc91c6e
+		summarizeBy: none
+		sourceColumn: What They Do
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Founded (Reported)'
+		dataType: string
+		lineageTag: 7242c370-6109-5742-b5aa-348b94e9ff39
+		summarizeBy: none
+		sourceColumn: Founded (Reported)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Founded Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 821f8577-705f-54d2-9637-15faedac8999
+		summarizeBy: none
+		sourceColumn: Founded Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'HQ / Greek Link'
+		dataType: string
+		lineageTag: 77694a67-6e3e-56c7-8a2f-a8ec075c0c04
+		summarizeBy: none
+		sourceColumn: HQ / Greek Link
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stage (Reported)'
+		dataType: string
+		lineageTag: aa3042d3-e6a2-5869-ae63-af2c4e2d4d41
+		summarizeBy: none
+		sourceColumn: Stage (Reported)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Stage Group'
+		dataType: string
+		isHidden
+		lineageTag: 6624efb3-5fdc-5e9c-86d9-243bd1399c21
+		summarizeBy: none
+		sourceColumn: Stage Group
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Include / Borderline / Exclude / Hold, from the market map's scope review
+	column 'Map Status'
+		dataType: string
+		lineageTag: a0303b74-c3e6-5e9d-b294-6bfe6dea9088
+		summarizeBy: none
+		sourceColumn: Map Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'In Scope'
+		dataType: boolean
+		lineageTag: 23c64032-2b1c-5a9d-bb97-812a55502566
+		summarizeBy: none
+		sourceColumn: In Scope
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Verification Status'
+		dataType: string
+		lineageTag: b59cb975-5ec7-59cc-ade7-0ebd64fe4b89
+		summarizeBy: none
+		sourceColumn: Verification Status
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Verified / Verified with caveats / Not verified, derived from the verification notes
+	column 'Verification Tier'
+		dataType: string
+		lineageTag: 6c00e70b-e74a-553b-a539-533ae6396bec
+		summarizeBy: none
+		sourceColumn: Verification Tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column Website
+		dataType: string
+		lineageTag: f10e7be1-9d07-5d02-90ef-037ee88657e3
+		summarizeBy: none
+		sourceColumn: Website
+		dataCategory: WebUrl
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Source Links'
+		dataType: string
+		lineageTag: 448f37fc-091f-5763-8e5b-950abd9fb245
+		summarizeBy: none
+		sourceColumn: Source Links
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary Source'
+		dataType: string
+		lineageTag: 90d69cb2-3cbc-5ba8-b4ba-64068b42e81a
+		summarizeBy: none
+		sourceColumn: Primary Source
+		dataCategory: WebUrl
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: ec0a0233-53a9-53dd-b299-eaf99fd365b7
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last Verified'
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 2e2027f2-2950-5026-8863-19a442356f8d
+		summarizeBy: none
+		sourceColumn: Last Verified
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GitHub Org'
+		dataType: string
+		lineageTag: 8d98e615-e387-58d8-9b05-55a2f5bc1bc0
+		summarizeBy: none
+		sourceColumn: GitHub Org
+
+		annotation SummarizationSetBy = Automatic
+
+	column LinkedIn
+		dataType: string
+		lineageTag: 357b650a-0720-59b4-ae87-e8ac7a2d82e8
+		summarizeBy: none
+		sourceColumn: LinkedIn
+		dataCategory: WebUrl
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'On Watchlist'
+		dataType: boolean
+		lineageTag: 467bd5b9-b199-5e0d-925a-f9865308cbb6
+		summarizeBy: none
+		sourceColumn: On Watchlist
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Greek funds named in the company's investors text, pipe-separated
+	column 'Greek Funds'
+		dataType: string
+		lineageTag: 724947c5-f8fc-596a-8ae6-10d84cd90fd5
+		summarizeBy: none
+		sourceColumn: Greek Funds
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Pipeline Stage'
+		dataType: string
+		lineageTag: 0c83cde6-26b6-542c-87b0-b82ecf2d6eba
+		summarizeBy: none
+		sourceColumn: Pipeline Stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column Recommendation
+		dataType: string
+		lineageTag: c848d080-f877-59be-9d38-7cd54fd20000
+		summarizeBy: none
+		sourceColumn: Recommendation
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Next Action'
+		dataType: string
+		lineageTag: b77c33cc-a2ad-50e3-97cb-1834f97bd2cb
+		summarizeBy: none
+		sourceColumn: Next Action
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Company = m
+		mode: import
+		source =
+				let
+				    Raw = RawCompanies,
+				    Funds = #"Company Fund",
+				    FundList = Table.Group(Funds, {"Company ID"}, {{"Greek Funds", each Text.Combine(List.Sort([Fund]), " | "), type text}}),
+				    Watch = Table.PromoteHeaders(Csv.Document(File.Contents(DataFolder & "watchlist.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv])),
+				    WatchIds = List.Buffer(Table.Column(Watch, Table.ColumnNames(Watch){0})),
+				    Pipe = Table.PromoteHeaders(Csv.Document(File.Contents(DataFolder & "pipeline.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv])),
+				    PipeT = Table.RenameColumns(Table.SelectColumns(Pipe, {Table.ColumnNames(Pipe){0}, "pipeline_stage", "recommendation", "next_action"}),
+				        {{Table.ColumnNames(Pipe){0}, "pid"}, {"pipeline_stage", "Pipeline Stage"}, {"recommendation", "Recommendation"}, {"next_action", "Next Action"}}),
+				    Base = Table.SelectColumns(Raw, {"company_id", "company", "category", "sub_sector", "what_they_do", "founded", "hq_greek_link",
+				        "stage", "map_status", "verification_status", "website", "source_link", "notes", "last_verified", "github_org", "linkedin_url"}),
+				    Renamed = Table.RenameColumns(Base, {
+				        {"company_id", "Company ID"}, {"company", "Company"}, {"category", "Sector"}, {"sub_sector", "Sub-sector"},
+				        {"what_they_do", "What They Do"}, {"founded", "Founded (Reported)"}, {"hq_greek_link", "HQ / Greek Link"},
+				        {"stage", "Stage (Reported)"}, {"map_status", "Map Status"}, {"verification_status", "Verification Status"},
+				        {"website", "Website"}, {"source_link", "Source Links"}, {"notes", "Notes"}, {"last_verified", "Last Verified"},
+				        {"github_org", "GitHub Org"}, {"linkedin_url", "LinkedIn"}}),
+				    AddStage = Table.AddColumn(Renamed, "Stage Group", each fnStageGroup([#"Stage (Reported)"]), type text),
+				    AddFounded = Table.AddColumn(AddStage, "Founded Year", each
+				        let s = Text.Start([#"Founded (Reported)"], 4) in
+				        if Text.Length(s) = 4 and List.AllTrue(List.Transform(Text.ToList(s), (c) => List.Contains({"0".."9"}, c))) then Number.FromText(s) else null, Int64.Type),
+				    AddTier = Table.AddColumn(AddFounded, "Verification Tier", each
+				        let v = Text.Lower([Verification Status]) in
+				        if List.AnyTrue(List.Transform({"unverified", "not found", "conflict", "single", "not re-verified", "only", "vary", "differ", "thin", "partly", "stale", "not confirmed"}, (w) => Text.Contains(v, w)))
+				            then (if Text.Contains(v, "verified") and not Text.StartsWith(v, "not ") then "Verified with caveats" else "Not verified")
+				        else if Text.Contains(v, "verified") then "Verified" else "Not verified", type text),
+				    AddScope = Table.AddColumn(AddTier, "In Scope", each List.Contains({"Include", "Borderline"}, [Map Status]), type logical),
+				    AddSource = Table.AddColumn(AddScope, "Primary Source", each Text.Trim(Text.BeforeDelimiter([Source Links], "|")), type text),
+				    AddWatch = Table.AddColumn(AddSource, "On Watchlist", each List.Contains(WatchIds, [Company ID]), type logical),
+				    JoinFunds = Table.NestedJoin(AddWatch, {"Company ID"}, FundList, {"Company ID"}, "F", JoinKind.LeftOuter),
+				    ExpFunds = Table.ExpandTableColumn(JoinFunds, "F", {"Greek Funds"}),
+				    FundText = Table.TransformColumns(ExpFunds, {{"Greek Funds", each if _ = null then "" else _, type text}}),
+				    JoinPipe = Table.NestedJoin(FundText, {"Company ID"}, PipeT, {"pid"}, "P", JoinKind.LeftOuter),
+				    ExpPipe = Table.ExpandTableColumn(JoinPipe, "P", {"Pipeline Stage", "Recommendation", "Next Action"}),
+				    Typed = Table.TransformColumnTypes(ExpPipe, {{"Last Verified", type date}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

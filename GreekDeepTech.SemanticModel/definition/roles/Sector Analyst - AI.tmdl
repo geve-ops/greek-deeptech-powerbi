@@ -1,0 +1,7 @@
+/// Demo role: an analyst covering AI & Machine Learning sees only that sector
+role 'Sector Analyst - AI'
+	modelPermission: read
+
+	tablePermission Sector = 'Sector'[Sector] = "AI & Machine Learning"
+
+	annotation PBI_Id = 73cb2652bcc25208bdf0a0bf6b120e55

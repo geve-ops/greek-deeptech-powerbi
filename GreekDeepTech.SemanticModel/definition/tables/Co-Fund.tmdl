@@ -1,0 +1,41 @@
+/// Disconnected copy of Fund, used as the columns of the overlap matrix
+table 'Co-Fund'
+	lineageTag: 95b0496e-80c7-5b7e-9ce4-ef9a246d2f8b
+
+	column 'Co-Fund'
+		dataType: string
+		lineageTag: cc2dc880-d2fa-5c5d-8839-16e7b2de1ff3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Co-Fund]
+		sortByColumn: 'Co-Fund Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Co-Fund Short'
+		dataType: string
+		lineageTag: e564fe90-4c47-5fcc-86e0-fd1411cd0546
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Co-Fund Short]
+		sortByColumn: 'Co-Fund Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Co-Fund Order'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 0f04765c-96ec-5e35-add7-1090309db57f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Co-Fund Order]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Co-Fund' = calculated
+		mode: import
+		source =
+				SELECTCOLUMNS ( 'Fund', "Co-Fund", 'Fund'[Fund], "Co-Fund Short", 'Fund'[Fund Short], "Co-Fund Order", 'Fund'[Fund Order] )
+
+	annotation PBI_ResultType = Table

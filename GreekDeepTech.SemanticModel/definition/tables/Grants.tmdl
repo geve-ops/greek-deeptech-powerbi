@@ -1,0 +1,112 @@
+/// Fact: EU-funded projects (CORDIS) whose text names the company
+table Grants
+	lineageTag: d996edd0-4c73-5051-a69e-820c279675d5
+
+	column 'Company ID'
+		dataType: string
+		isHidden
+		lineageTag: ec0b9519-a22e-5ee1-b814-bdbf0b0ce0e3
+		summarizeBy: none
+		sourceColumn: Company ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Project ID'
+		dataType: string
+		lineageTag: 5a157791-62a6-5c25-a6d8-08ea0e5c1386
+		summarizeBy: none
+		sourceColumn: Project ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Acronym
+		dataType: string
+		lineageTag: 995a3b2a-1f98-50d8-993a-5747e6514927
+		summarizeBy: none
+		sourceColumn: Acronym
+
+		annotation SummarizationSetBy = Automatic
+
+	column Title
+		dataType: string
+		lineageTag: 3e8432c4-e17e-52e7-9acd-c48bfdde7302
+		summarizeBy: none
+		sourceColumn: Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Signed Date'
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: cb4df21b-de77-59f5-9abd-62b948ece171
+		summarizeBy: none
+		sourceColumn: Signed Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start Date'
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: a85bb8ba-2b28-5a8d-9732-7084f8d42b09
+		summarizeBy: none
+		sourceColumn: Start Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End Date'
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 0059b9d1-2b82-5334-93e7-86fe72b43b1c
+		summarizeBy: none
+		sourceColumn: End Date
+
+		annotation SummarizationSetBy = Automatic
+
+	/// EU contribution to the whole project (CORDIS), not only the company's share
+	column 'EU Contribution (EUR)'
+		dataType: double
+		formatString: #,0
+		lineageTag: 4418b3e3-e79f-5422-b7c4-01ffbbf92517
+		summarizeBy: none
+		sourceColumn: EU Contribution (EUR)
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 04880635-38d0-59d8-a7de-39f2bf2ef4d3
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column URL
+		dataType: string
+		lineageTag: b30e51f6-d152-5cac-aa88-a6ef85a58326
+		summarizeBy: none
+		sourceColumn: URL
+		dataCategory: WebUrl
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Grants = m
+		mode: import
+		source =
+				let
+				    Cos = Table.ToRecords(Snapshot),
+				    toDate = (x) => if x = null or x = "" then null else Date.FromText(Text.Start(x, 10), [Format = "yyyy-MM-dd", Culture = "en-US"]),
+				    Recs = List.Combine(List.Transform(Cos, (c) =>
+				        let g = if c[Value] = null then null else Record.FieldOrDefault(c[Value], "grants", null),
+				            l = if g = null then {} else Record.FieldOrDefault(g, "items", {})
+				        in List.Transform(l, (i) => [
+				            #"Company ID" = c[Name], #"Project ID" = Text.From(i[id]), Acronym = Record.FieldOrDefault(i, "acronym", null),
+				            Title = i[title], #"Signed Date" = toDate(Record.FieldOrDefault(i, "signed", null)),
+				            #"Start Date" = toDate(Record.FieldOrDefault(i, "start", null)), #"End Date" = toDate(Record.FieldOrDefault(i, "end", null)),
+				            #"EU Contribution (EUR)" = Record.FieldOrDefault(i, "eu_contribution", null),
+				            Status = Record.FieldOrDefault(i, "status", null), URL = i[url]]))),
+				    Out = Table.FromRecords(Recs, type table [#"Company ID" = text, #"Project ID" = text, Acronym = text, Title = text,
+				        #"Signed Date" = date, #"Start Date" = date, #"End Date" = date, #"EU Contribution (EUR)" = number, Status = text, URL = text])
+				in
+				    Out
+
+	annotation PBI_ResultType = Table

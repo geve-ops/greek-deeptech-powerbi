@@ -1,0 +1,171 @@
+/// Fact: last known round per company (the market map holds one round per company)
+table Rounds
+	lineageTag: 2029458f-883e-588e-843e-cea727e6c4b4
+
+	column 'Round ID'
+		dataType: string
+		isHidden
+		lineageTag: 31fffcb2-cb4d-5e25-8498-f012cf2b8e0a
+		summarizeBy: none
+		sourceColumn: Round ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Company ID'
+		dataType: string
+		isHidden
+		lineageTag: 9d518d37-13da-55cd-8427-e9c57d253fe8
+		summarizeBy: none
+		sourceColumn: Company ID
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Amount exactly as written in the market map, with its caveats
+	column 'Amount Text'
+		dataType: string
+		lineageTag: 0b4157bc-15c0-585e-b16b-c82059e9bf2a
+		summarizeBy: none
+		sourceColumn: Amount Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column Currency
+		dataType: string
+		lineageTag: 898b5180-fce6-51d2-807f-0b4b95de9a68
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	/// First amount stated in Amount Text, in its own currency
+	column 'Amount (Native)'
+		dataType: double
+		formatString: #,0
+		lineageTag: e87d9dd0-6de3-5060-ada1-a6f8da2c8c81
+		summarizeBy: none
+		sourceColumn: Amount (Native)
+
+		annotation SummarizationSetBy = Automatic
+
+	/// As reported / Approximate (~) / Lower bound (more than) / Not disclosed
+	column 'Amount Flag'
+		dataType: string
+		lineageTag: f1850df9-a3ad-5344-aa2d-34008acdf8e3
+		summarizeBy: none
+		sourceColumn: Amount Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deal Type'
+		dataType: string
+		lineageTag: 444aa58b-e361-55c0-8daa-3d8d84e48c96
+		summarizeBy: none
+		sourceColumn: Deal Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Round Date'
+		dataType: dateTime
+		formatString: yyyy-mm
+		lineageTag: 786d3444-3f14-5e32-b746-c9d164a097f1
+		summarizeBy: none
+		sourceColumn: Round Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Round Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: ad65c944-10f8-5aa2-a0de-2e1cc92d83f1
+		summarizeBy: none
+		sourceColumn: Round Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date Precision'
+		dataType: string
+		lineageTag: 54277c27-17e2-537a-85d9-a68d1dd4ac42
+		summarizeBy: none
+		sourceColumn: Date Precision
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date Has Caveat'
+		dataType: boolean
+		lineageTag: 6d3fa50c-3311-5abd-8e67-9f7626a795d6
+		summarizeBy: none
+		sourceColumn: Date Has Caveat
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date Text'
+		dataType: string
+		lineageTag: 28a16f80-6075-5cf3-818b-a54814798165
+		summarizeBy: none
+		sourceColumn: Date Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column Investors
+		dataType: string
+		lineageTag: fbf98d75-ae56-5ba0-8011-f82c4bdf8ef5
+		summarizeBy: none
+		sourceColumn: Investors
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sources
+		dataType: string
+		lineageTag: 52c30643-ed03-5f1d-b618-71702568886d
+		summarizeBy: none
+		sourceColumn: Sources
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Has a stated amount and is not an exit
+	column 'Counts As Capital'
+		dataType: boolean
+		lineageTag: 5ba35172-9055-5d25-ae6c-d61c504c9963
+		summarizeBy: none
+		sourceColumn: Counts As Capital
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Rounds = m
+		mode: import
+		source =
+				let
+				    Src = Table.SelectColumns(RawCompanies, {"company_id", "stage", "last_round_amount", "last_round_date", "investors", "source_link"}),
+				    Amt = Table.AddColumn(Src, "A", each fnParseAmount([last_round_amount])),
+				    Dt = Table.AddColumn(Amt, "D", each fnParseDate([last_round_date])),
+				    Cols = Table.AddColumn(Dt, "R", each [
+				        #"Round ID" = [company_id] & "-LAST",
+				        #"Company ID" = [company_id],
+				        #"Amount Text" = [last_round_amount],
+				        Currency = [A][Currency],
+				        #"Amount (Native)" = [A][Amount],
+				        #"Amount Flag" = [A][Flag],
+				        #"Deal Type" =
+				            let a = Text.Lower([last_round_amount]), s = Text.Lower([stage]) in
+				            if Text.Contains(a, "acqui") or Text.StartsWith(s, "exited") or Text.Contains(s, "acquired") then "Exit / M&A"
+				            else if Text.Contains(a, "grant") or Text.Contains(s, "grant-funded") then "Grant"
+				            else if Text.Contains(a, "debt") or Text.Contains(s, "debt") then "Venture debt"
+				            else if [A][Amount] = null then "Undisclosed"
+				            else "Equity",
+				        #"Round Date" = [D][Date],
+				        #"Round Year" = [D][Year],
+				        #"Date Precision" = [D][Precision],
+				        #"Date Has Caveat" = [D][Caveat],
+				        #"Date Text" = [last_round_date],
+				        Investors = [investors],
+				        Sources = [source_link]
+				    ]),
+				    Rows = Table.FromRecords(Cols[R], type table [
+				        #"Round ID" = text, #"Company ID" = text, #"Amount Text" = text, Currency = text, #"Amount (Native)" = number,
+				        #"Amount Flag" = text, #"Deal Type" = text, #"Round Date" = date, #"Round Year" = Int64.Type,
+				        #"Date Precision" = text, #"Date Has Caveat" = logical, #"Date Text" = text, Investors = text, Sources = text]),
+				    Capital = Table.AddColumn(Rows, "Counts As Capital", each [#"Amount (Native)"] <> null and [Deal Type] <> "Exit / M&A", type logical)
+				in
+				    Capital
+
+	annotation PBI_ResultType = Table

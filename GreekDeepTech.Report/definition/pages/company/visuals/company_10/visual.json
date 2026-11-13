@@ -1,0 +1,135 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.8.0/schema.json",
+  "name": "company_10",
+  "position": {
+    "x": 645,
+    "y": 376,
+    "z": 10000,
+    "height": 160,
+    "width": 620,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Grants"
+                    }
+                  },
+                  "Property": "Acronym"
+                }
+              },
+              "queryRef": "Grants.Acronym",
+              "nativeQueryRef": "Acronym"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Grants"
+                    }
+                  },
+                  "Property": "Signed Date"
+                }
+              },
+              "queryRef": "Grants.Signed Date",
+              "nativeQueryRef": "Signed Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Grants"
+                    }
+                  },
+                  "Property": "EU Contribution (EUR)"
+                }
+              },
+              "queryRef": "Grants.EU Contribution (EUR)",
+              "nativeQueryRef": "EU Contribution (EUR)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Grants"
+                    }
+                  },
+                  "Property": "Status"
+                }
+              },
+              "queryRef": "Grants.Status",
+              "nativeQueryRef": "Status"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Grants"
+                  }
+                },
+                "Property": "Signed Date"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'EU-funded projects naming the company (CORDIS)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

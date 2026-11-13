@@ -1,0 +1,141 @@
+expression DataFolder = "C:\Users\gevel\Documents\greek-deeptech-powerbi\data\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 5f5f4d0e-3575-5772-9a11-a01a3f8c6d2b
+
+	annotation PBI_ResultType = Text
+
+expression RawCompanies =
+		// Market map dataset: one row per company with its last known round and the sources behind it
+		let
+		    Source = Csv.Document(File.Contents(DataFolder & "greek_deeptech_dataset.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+		    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+		    FixBom = if Table.ColumnNames(Promoted){0} = "company_id" then Promoted else Table.RenameColumns(Promoted, {{Table.ColumnNames(Promoted){0}, "company_id"}})
+		in
+		    FixBom
+	lineageTag: 0ab12207-a6da-5885-8124-f37d4c3b7fd0
+
+	annotation PBI_ResultType = Table
+
+expression Snapshot =
+		// Weekly signal snapshot from the deal-flow tracker (news, hiring, GitHub, EU grants)
+		let
+		    Source = Json.Document(File.Contents(DataFolder & "snapshot_2026-10-26.json")),
+		    Companies = Record.ToTable(Source[companies])
+		in
+		    Companies
+	lineageTag: 54dfa06a-6b92-5138-9a0c-c20edd7cc8d2
+
+	annotation PBI_ResultType = Table
+
+expression FundKeywords =
+		// Greek venture funds and the phrases that identify them in the investors text.
+		// Same fund list as the deal-flow tracker (tracker/watchlist.py); the first five are the target funds.
+		#table(
+		    type table [Fund = text, #"Fund Short" = text, #"Is Target Fund" = logical, #"Fund Order" = Int64.Type, Keywords = list],
+		    {
+		        {"Big Pi Ventures", "Big Pi", true, 1, {" big pi ventures ", " bigpi ventures "}},
+		        {"Marathon VC", "Marathon", true, 2, {" marathon venture capital ", " marathon vc "}},
+		        {"Metavallon VC", "Metavallon", true, 3, {" metavallon "}},
+		        {"Velocity Partners", "Velocity", true, 4, {" velocity partners "}},
+		        {"egg / Eurobank", "egg", true, 5, {" egg ", " eurobank "}},
+		        {"Uni.Fund", "Uni.Fund", false, 6, {" uni fund "}},
+		        {"Genesis Ventures", "Genesis", false, 7, {" genesis ventures "}},
+		        {"Evercurious VC", "Evercurious", false, 8, {" evercurious "}},
+		        {"Phaistos Investment Fund", "Phaistos", false, 9, {" phaistos "}},
+		        {"Starttech Ventures", "Starttech", false, 10, {" starttech "}}
+		    }
+		)
+	lineageTag: e98034a3-a55c-5810-ad17-917a8234eaca
+
+	annotation PBI_ResultType = Table
+
+expression fnNormalise =
+		// Lower-case text, punctuation to spaces, single spaces, padded so keywords match whole words
+		(txt as nullable text) as text =>
+		let
+		    t = if txt = null then "" else Text.Lower(txt),
+		    spaced = Text.Combine(List.Transform(Text.ToList(t), each if List.Contains({",", ".", ";", ":", "(", ")", "/"}, _) then " " else _)),
+		    words = List.Select(Text.Split(spaced, " "), each _ <> "")
+		in
+		    " " & Text.Combine(words, " ") & " "
+	lineageTag: 531f9ed0-f697-5d09-90bf-0df472481964
+
+	annotation PBI_ResultType = Function
+
+expression fnParseAmount =
+		// First "<EUR|USD|GBP> <number><K|M|B>" in the reported amount text. Nothing is estimated:
+		// texts that say the amount is not found, undisclosed or unverified return no amount.
+		(txt as nullable text) as record =>
+		let
+		    t = if txt = null then "" else Text.Trim(txt),
+		    lower = Text.Lower(t),
+		    excluded = List.AnyTrue(List.Transform(
+		        {"not ", "unverified", "no external", "acquisition (terms", "acquisition, terms", "undisclosed", "seven figures"},
+		        each Text.StartsWith(lower, _))),
+		    cleaned = Text.Combine(List.Transform(Text.ToList(t), each if List.Contains({"(", ")", ",", ";", "~"}, _) then " " else _)),
+		    tokens = List.Select(Text.Split(cleaned, " "), each _ <> ""),
+		    isAmount = (s as text) as logical =>
+		        let
+		            a = Text.BeforeDelimiter(s, "-"),
+		            n = Text.Length(a),
+		            suffix = if n > 1 then Text.End(a, 1) else "",
+		            num = if n > 1 then Text.Start(a, n - 1) else ""
+		        in
+		            List.Contains({"K", "M", "B"}, suffix) and (try Number.FromText(num, "en-US") otherwise null) <> null,
+		    hits = List.Select(List.Positions(tokens),
+		        each List.Contains({"EUR", "USD", "GBP"}, tokens{_}) and _ + 1 < List.Count(tokens) and isAmount(tokens{_ + 1})),
+		    first = if excluded or List.IsEmpty(hits) then null else hits{0},
+		    currency = if first = null then null else tokens{first},
+		    raw = if first = null then null else Text.BeforeDelimiter(tokens{first + 1}, "-"),
+		    multiplier = if raw = null then null else Record.Field([K = 1000, M = 1000000, B = 1000000000], Text.End(raw, 1)),
+		    amount = if raw = null then null else Number.FromText(Text.Start(raw, Text.Length(raw) - 1), "en-US") * multiplier,
+		    flag =
+		        if amount = null then "Not disclosed"
+		        else if Text.StartsWith(lower, "~") or Text.StartsWith(lower, "about") then "Approximate"
+		        else if Text.StartsWith(lower, "more than") then "Lower bound"
+		        else "As reported"
+		in
+		    [Currency = currency, Amount = amount, Flag = flag]
+	lineageTag: 2af927ed-ec9e-5ca6-a644-cbd117c72403
+
+	annotation PBI_ResultType = Function
+
+expression fnParseDate =
+		// Reported round date text to a date. Month-only dates go to the first of the month;
+		// year-only dates get no date (kept as Round Year) so they never land on a made-up month.
+		(txt as nullable text) as record =>
+		let
+		    t = if txt = null then "" else Text.Trim(txt),
+		    digits = (s as text) => s <> "" and List.AllTrue(List.Transform(Text.ToList(s), each List.Contains({"0".."9"}, _))),
+		    y = if Text.Length(t) >= 4 and digits(Text.Start(t, 4)) then Number.FromText(Text.Start(t, 4)) else null,
+		    m = if y <> null and Text.Length(t) >= 7 and Text.Middle(t, 4, 1) = "-" and digits(Text.Middle(t, 5, 2)) then Number.FromText(Text.Middle(t, 5, 2)) else null,
+		    d = if m <> null and Text.Length(t) >= 10 and Text.Middle(t, 7, 1) = "-" and digits(Text.Middle(t, 8, 2)) then Number.FromText(Text.Middle(t, 8, 2)) else null,
+		    precision = if d <> null then "Day" else if m <> null then "Month" else if y <> null then "Year" else "Not found",
+		    dt = if d <> null then #date(y, m, d) else if m <> null then #date(y, m, 1) else null,
+		    lower = Text.Lower(t),
+		    caveat = List.AnyTrue(List.Transform({" to ", " or ", "unverified", "differ", "vary", "aggregator"}, each Text.Contains(lower, _)))
+		in
+		    [Date = dt, Year = y, Precision = precision, Caveat = caveat]
+	lineageTag: 0cba4c3c-a16c-560c-b6a1-d1587e0d67fa
+
+	annotation PBI_ResultType = Function
+
+expression fnStageGroup =
+		// Groups the free-text stage labels into ten buckets; the first rule that matches wins
+		(stage as nullable text) as text =>
+		let
+		    s = if stage = null then "" else Text.Lower(stage),
+		    has = (words as list) => List.AnyTrue(List.Transform(words, each Text.Contains(s, _)))
+		in
+		    if Text.StartsWith(s, "exited") or has({"acquired"}) then "Exited"
+		    else if Text.StartsWith(s, "pre-seed") then "Pre-seed"
+		    else if has({"series c", "series b", "late stage", "growth"}) then "Series B+ / Growth"
+		    else if has({"series a"}) then "Series A"
+		    else if has({"seed"}) then "Seed"
+		    else if has({"grant", "incubated"}) then "Grant / Incubated"
+		    else if has({"strategic", "corporate", "group-owned", "sme"}) then "Strategic / Corporate / SME"
+		    else if has({"debt"}) then "Debt / Other"
+		    else if has({"unverified"}) then "Unverified"
+		    else "Debt / Other"
+	lineageTag: 75537d24-ca49-593d-8e5b-9030ff372882
+
+	annotation PBI_ResultType = Function
